@@ -18,7 +18,26 @@
 
 		</header><!-- .entry-header -->
 
-		<?php if ( is_search() ) : // Only display Excerpts for Search ?>
+		<?php if ( is_search() || is_archive() ) :
+		/* display excerpts/thumbnails for Search/Archives */ ?>
+			<?php
+			if (has_post_thumbnail()) :
+			
+				$tid = get_post_thumbnail_id($post->ID);
+				$att = get_post($tid);
+				$caption = $att->post_excerpt;
+				$print_size = wp_get_attachment_image_src($tid, 'post-thumbnail');
+				$caption_width_attr = ($print_size)? ' style="width:' . $print_size[1] . 'px;"': '';
+			?>
+		<div class="figure featured-image">
+			<?php echo wp_get_attachment_image($tid, $thumbnail_size); ?>
+			<?php  if ($caption) { ?>
+				<div class="figcaption"<?php echo $caption_width_attr; ?>>
+					<p><?php echo $caption; ?></p>
+				</div>
+			<?php } ?>
+		</div>
+			<?php endif; ?>
 		<div class="entry-summary">
 			<?php the_excerpt(); ?>
 		</div><!-- .entry-summary -->
@@ -27,7 +46,6 @@
 			<?php the_content( 'Continue reading <span class="meta-nav">&rarr;</span>' ); ?>
 			<?php wp_link_pages( array( 'before' => '<div class="page-link"><span>Pages:</span>', 'after' => '</div>' ) ); ?>
 		</div><!-- .entry-content -->
-		<?php endif; ?>
 
 		<footer class="entry-meta">
 			<?php $show_sep = false; ?>
@@ -64,4 +82,5 @@
 
 			<?php edit_post_link( 'Edit', '<span class="edit-link">', '</span>' ); ?>
 		</footer><!-- #entry-meta -->
+		<?php endif; ?>
 	</article><!-- #post-<?php the_ID(); ?> -->

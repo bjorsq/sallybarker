@@ -183,6 +183,44 @@ a:hover {
 .container-fluid:after {
   clear: both;
 }
+article.summary {
+  border-bottom: 1px solid #094457;
+  clear: both;
+  *zoom: 1;
+}
+article.summary:before,
+article.summary:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+article.summary:after {
+  clear: both;
+}
+article.summary .entry-header {
+  width: 50%;
+  float: left;
+}
+article.summary .entry-summary {
+  clear: left;
+}
+article.summary .featured-image {
+  width: 40%;
+  float: right;
+  margin: 0 0 1em 1em;
+}
+.comic-frame-linear {
+  width: 100%;
+  overflow: auto;
+}
+.comic-frame-pages {
+  width: 100%;
+}
+.comic-frame-pages .frames img {
+  max-width: 100%;
+  height: auto;
+  position: absolute;
+}
 .row {
   margin-left: -20px;
   *zoom: 1;
@@ -1733,20 +1771,19 @@ table [class*=span],
 .table-hover tbody tr.info:hover td {
   background-color: #c4e3f3;
 }
-.nav {
+.menu {
   margin-left: 0;
   margin-bottom: 20px;
   list-style: none;
 }
-.nav > li > a {
+.menu > li > a {
   display: block;
 }
-.nav > li > a:hover {
+.menu > li > a:hover,
+.menu > li.current-menu-item a {
   text-decoration: none;
-  background-color: #eeeeee;
-}
-.nav > .pull-right {
-  float: right;
+  background-color: #063240;
+  color: #ffffff;
 }
 .nav-header {
   display: block;
@@ -1758,7 +1795,7 @@ table [class*=span],
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
 }
-.nav li + .nav-header {
+.menu li + .nav-header {
   margin-top: 9px;
 }
 .nav-list {
@@ -1779,7 +1816,7 @@ table [class*=span],
 .nav-list > .active > a:hover {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  background-color: #0088cc;
+  background-color: #063240;
 }
 .nav-list [class^="icon-"] {
   margin-right: 2px;
@@ -2830,6 +2867,143 @@ table [class*=span],
     overflow: visible !important;
   }
 }
+/* slideshows */
+.js .slideshow .slideshow-caption {
+  display: none;
+}
+.slideshow {
+  position: relative;
+  margin-bottom: 1em;
+}
+.slideshow .slideshow-caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  z-index: 2;
+}
+.slideshow .slideshow-caption .slideshow-captiontext {
+  padding: 3px 10px;
+  margin: 0;
+}
+.slideshow .slideshow-caption .slideshow-captiontext p {
+  padding: 0;
+  margin: 0;
+}
+.slideshow .slideshow-caption .slideshow-controls {
+  float: right;
+  overflow: hidden;
+  padding: 5px 3px;
+}
+.slideshow .slideshow-caption .slideshow-controls a {
+  text-decoration: none;
+  display: block;
+  float: left;
+  height: 0.6em;
+  font-size: 3em;
+  line-height: 0.6em;
+  overflow: hidden;
+}
+/* fix rendering bug in colorbox for dynamically loaded styles */
+#cboxWrapper {
+  position: relative;
+}
+/* child and sibling pages lists shortcode */
+.child-pages-list ul,
+.sibling-pages-list ul {
+  list-style: none;
+  margin: 0;
+}
+.child-pages-list li,
+.sibling-pages-list li {
+  display: block;
+  list-style: none;
+  padding: 1em 0;
+  border-bottom: 1px solid #ddd;
+  clear: both;
+}
+.child-pages-list li li,
+.sibling-pages-list li li {
+  display: list-item;
+  border: 0;
+  padding: 0.5em 0;
+}
+.child-pages-grid li {
+  width: 160px;
+  height: 200px;
+  overflow: hidden;
+  margin-right: 20px;
+  border-bottom: none;
+  float: left;
+  clear: none;
+  text-align: center;
+  /* cancel fixed height for browsers supporting nth-child */
+
+  /* four columns (need to factor this out to shortcode) */
+
+}
+.child-pages-grid li:nth-child(1n) {
+  height: auto !IMPORTANT;
+  overflow: visible !IMPORTANT;
+}
+.child-pages-grid li:nth-child(4n+1) {
+  clear: left;
+}
+.thumbnails {
+  margin-left: -20px;
+  list-style: none;
+  *zoom: 1;
+}
+.thumbnails:before,
+.thumbnails:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.thumbnails:after {
+  clear: both;
+}
+.row-fluid .thumbnails {
+  margin-left: 0;
+}
+.thumbnails > li {
+  float: left;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+.thumbnail {
+  display: block;
+  padding: 4px;
+  line-height: 20px;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+a.thumbnail:hover {
+  border-color: #0088cc;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+  -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+}
+.thumbnail > img {
+  display: block;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.thumbnail .caption {
+  padding: 9px;
+  color: #555555;
+}
 [class^="icon-"],
 [class*=" icon-"] {
   display: inline-block;
@@ -3832,60 +4006,6 @@ button.close {
   border-left-color: rgba(0, 0, 0, 0.25);
   bottom: -11px;
   right: -1px;
-}
-.thumbnails {
-  margin-left: -20px;
-  list-style: none;
-  *zoom: 1;
-}
-.thumbnails:before,
-.thumbnails:after {
-  display: table;
-  content: "";
-  line-height: 0;
-}
-.thumbnails:after {
-  clear: both;
-}
-.row-fluid .thumbnails {
-  margin-left: 0;
-}
-.thumbnails > li {
-  float: left;
-  margin-bottom: 20px;
-  margin-left: 20px;
-}
-.thumbnail {
-  display: block;
-  padding: 4px;
-  line-height: 20px;
-  border: 1px solid #ddd;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
-  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-}
-a.thumbnail:hover {
-  border-color: #0088cc;
-  -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-  -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-}
-.thumbnail > img {
-  display: block;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.thumbnail .caption {
-  padding: 9px;
-  color: #555555;
 }
 .label,
 .badge {

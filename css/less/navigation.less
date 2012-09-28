@@ -6,24 +6,20 @@
 // BASE CLASS
 // ----------
 
-.nav {
+.menu {
   margin-left: 0;
   margin-bottom: @baseLineHeight;
   list-style: none;
 }
 
 // Make links block level
-.nav > li > a {
+.menu > li > a {
   display: block;
 }
-.nav > li > a:hover {
+.menu > li > a:hover, .menu > li.current-menu-item a {
   text-decoration: none;
-  background-color: @grayLighter;
-}
-
-// Redeclare pull classes because of specifity
-.nav > .pull-right {
-  float: right;
+  background-color: lighten(@bodyBackground, 5%);
+  color:@white;
 }
 
 // Nav headers (for dropdowns and lists)
@@ -38,7 +34,7 @@
   text-transform: uppercase;
 }
 // Space them out when they follow another list item (link)
-.nav li + .nav-header {
+.menu li + .nav-header {
   margin-top: 9px;
 }
 
@@ -65,7 +61,7 @@
 .nav-list > .active > a:hover {
   color: @white;
   text-shadow: 0 -1px 0 rgba(0,0,0,.2);
-  background-color: @linkColor;
+  background-color: lighten(@bodyBackground, 5%);
 }
 .nav-list [class^="icon-"] {
   margin-right: 2px;

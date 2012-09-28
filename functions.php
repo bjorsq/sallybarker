@@ -18,10 +18,20 @@ require_once(dirname(__FILE__) . '/lib/sidebars.php');
  */
 function sb_setup_theme()
 {
-	add_theme_support( 'post-thumbnails' );
 	add_action( 'init', 'sb_add_page_excerpt' );
 	/* enqueue scripts */
 	add_action ('wp_enqueue_scripts', 'sb_enqueue_scripts' );
+	/* This theme styles the visual editor with editor-style.css to match the theme style. */
+	add_editor_style();
+	/* This theme uses post thumbnails */
+	add_theme_support( 'post-thumbnails' );
+	// size of post thumbnails
+	set_post_thumbnail_size( 500, 300, true );
+	/* product image size */
+	add_image_size('full-image', 1000, 9999);
+    /* sort out post classes for layout */
+    add_filter('post_class', 'sb_post_classes');
+
 }
 add_action( 'after_setup_theme', 'sb_setup_theme' );
 
@@ -36,6 +46,16 @@ function sb_add_page_excerpt()
 }
 
 /**
+ * adds a class to articles to distinguish archives and single items
+ */
+function sb_post_classes($classes)
+{
+	if ( is_search() || is_archive() ) :
+		$classes[] = "summary";
+	endif;
+	return $classes;
+}
+/**
  * inserts scripts for front-end
  * including replacing default jquery script with google CDN version
  */
@@ -43,7 +63,7 @@ function sb_enqueue_scripts()
 {
 	wp_deregister_script( 'jquery' );
 	wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js' );
-	wp_register_script( 'sb', get_template_directory_uri() . '/js/sb.min.js', array('jquery') );
+	wp_register_script( 'sb', get_template_directory_uri() . '/js/sb.js', array('jquery') );
 	wp_enqueue_script( 'sb' );
 }
 

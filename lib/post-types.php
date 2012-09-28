@@ -65,11 +65,11 @@ class sb_post_types
 			'labels' => array_merge($default_labels, $art_labels),
 			'public' => true,
 			'query_var' => true,
-			'rewrite' => true,
 			'capability_type' => 'page',
 			'has_archive' => true, 
 			'hierarchical' => true,
 			'menu_position' => 21,
+			'rewrite' => array( 'slug' => 'art', 'with_front' => false ),
 			'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )
 		) );
 		$cat_labels = array(
@@ -101,11 +101,11 @@ class sb_post_types
 			'labels' => array_merge($default_labels, $education_labels),
 			'public' => true,
 			'query_var' => true,
-			'rewrite' => true,
 			'capability_type' => 'page',
 			'has_archive' => true, 
 			'hierarchical' => true,
 			'menu_position' => 22,
+			'rewrite' => array( 'slug' => 'education', 'with_front' => false ),
 			'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )
 		) ); 
 	    $cat_labels = array(

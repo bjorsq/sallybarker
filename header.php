@@ -26,7 +26,7 @@
 
 			?></title>
 		<link rel="profile" href="http://gmpg.org/xfn/11" />
-		<link rel="stylesheet" type="text/css" media="all" href="<?php echo get_stylesheet_directory_uri(); ?>/css/sb.min.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="<?php echo get_stylesheet_directory_uri(); ?>/css/sb.css" />
 		<?php wp_head(); ?>
 
 		<!--[if lt IE 9]>
