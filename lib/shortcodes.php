@@ -141,59 +141,65 @@ class sb_shortcodes
 			}
 		}
 
-		extract(shortcode_atts(array(
+		$options = shortcode_atts(array(
 			'order'      => 'ASC',
 			'orderby'    => 'menu_order ID',
 			'id'         => $post->ID,
-			'size'       => 'thumbnail',
+			'full_size'  => 'large'
+			'thumb_size' => 'thumbnail',
 		    'class'      => '',
-		    'caption'    => true,
 			'include'    => '',
 			'exclude'    => ''
-		), $attr));
+		), $attr);
 
 		$id = intval($id);
 
-		if ( !empty($include) ) {
-			$include = preg_replace( '/[^0-9,]+/', '', $include );
-			$_attachments = get_posts( array('include' => $include, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
+		$attachments = self::get_image_attachments($options);
 
-			$attachments = array();
-			foreach ( $_attachments as $key => $val ) {
-				$attachments[$val->ID] = $_attachments[$key];
-			}
-		} elseif ( !empty($exclude) ) {
-			$exclude = preg_replace( '/[^0-9,]+/', '', $exclude );
-			$attachments = get_children( array('post_parent' => $id, 'exclude' => $exclude, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
-		} else {
-			$attachments = get_children( array('post_parent' => $id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
-		}
-
-		if ( empty($attachments) )
+		if ( empty($attachments) ) {
 			return '';
+		}
 
 		if ( is_feed() ) {
 			$output = "\n";
-			foreach ( $attachments as $att_id => $attachment )
+			foreach ( $attachments as $att_id => $attachment ) {
 				$output .= wp_get_attachment_link($att_id, $size, true) . "\n";
+			}
 			return $output;
 		}
-
 
 		$selector = "gallery-{$instance}";
 		$class = ' class="' . $type . '"';
 		$i = 0;
 		$output = "<div class=\"gallery\" id=\"$selector\">\n  <ul$class>\n";
-
+		$json = array();
+		$options["max_w"] = 0;
+		$options["max_h"] = 0;
 		foreach ( $attachments as $id => $attachment ) {
-			$output .= "    <li class=\"gallery-item\">\n      ";
-			$output .= wp_get_attachment_link($id, $size, false, false);
-			if ($caption && trim($attachment->post_excerpt) ) {
-				$output .= "      <div class=\"gallery-caption\">" . wptexturize($attachment->post_excerpt) . "</div>\n";
-			}
-			$output .= "    </li>\n";
+			/* get full size image details */
+	    	$src = wp_get_attachment_image_src($id, $options["full_size"]);
+	    	/* set max width and height */
+	    	$options["max_w"] = max($options["max_w"], $src[1]);
+	    	$options["max_h"] = max($options["max_h"], $src[2]);
+	    	/* get thumbnail image details */
+	    	$thumb = wp_get_attachment_image_src($id, $options["thumb_size"]);
+		    $output .= sprintf('<li class="gallery-item"><img src="%s" width="%s" height="%s" alt="%s" title="%s" /></li>', $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title));
+	    	$json[] = (object) array(
+			    "full_src" => $src[0],
+			    "full_w" => $src[1],
+			    "full_h" => $src[2],
+			    "thumb_src" => $thumb[0],
+			    "thumb_w" = $thumb[1],
+			    "thumb_h" = $thumb[2],
+			    "title" => $attachment->post_title,
+			    "caption" => $attachment->post_excerpt,
+			    "description" => $attachment->post_content,
+			    "id" => $id
+			);
 		}
-		$output .= "  </ul>\n  <br style=\"clear: both;\" />\n</div>\n";
+	    $settings = (object) $options;
+		$output .= "</ul>\n<script type=\"text/javascript\">\n  if (typeof gallerysettings === 'undefined') { var gallerysettings = {}; };\n  gallerysettings['$selector'] = " . json_encode($settings) . ";\n if (typeof images === 'undefined') { var images = {}; };\nimages['$selector'] = " . json_encode($json) . ";</script>\n";
+		$output .= "<br style=\"clear: both;\" />\n</div>\n";
 		return $output;
 	}
 
@@ -217,7 +223,7 @@ class sb_shortcodes
 			}
 		}
 
-		extract(shortcode_atts(array(
+		$options = shortcode_atts(array(
 			'order'      => 'ASC',
 			'orderby'    => 'menu_order ID',
 			'id'         => $post->ID,
@@ -235,46 +241,35 @@ class sb_shortcodes
 
 		$id = intval($id);
 
-		if ( !empty($include) ) {
-			$include = preg_replace( '/[^0-9,]+/', '', $include );
-			$_attachments = get_posts( array('include' => $include, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
-			$attachments = array();
-			foreach ( $_attachments as $key => $val ) {
-				$attachments[$val->ID] = $_attachments[$key];
-			}
-		} elseif ( !empty($exclude) ) {
-			$exclude = preg_replace( '/[^0-9,]+/', '', $exclude );
-			$attachments = get_children( array('post_parent' => $id, 'exclude' => $exclude, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
-		} else {
-			$attachments = get_children( array('post_parent' => $id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
-		}
+		$attachments = self::get_image_attachments($options);
 
 		if ( empty($attachments) )
 			return '';
 
-		$caption = (bool) $caption;
-		$navigation = (trim(strtolower($navigation)) == "thumbnails")? "thumbnails": (bool) $navigation;
-		$usetitle = (bool) $usetitle;
+		$caption = (bool) $options["caption"];
+		$navigation = (trim(strtolower($options["navigation"])) == "thumbnails")? "thumbnails": (bool) $options["navigation"];
+		$usetitle = (bool) $options["usetitle"];
 
 		if ( is_feed() ) {
 			$output = "\n";
-			foreach ( $attachments as $att_id => $attachment )
+			foreach ( $attachments as $att_id => $attachment ) {
 				$output .= wp_get_attachment_link($att_id, $size, true) . "\n";
+			}
 			return $output;
 		}
 
 		$selector = "slideshow-{$instance}";
-		if (trim($class) != "") {
-			$class = " " . trim($class);
+		if (trim($options["class"]) != "") {
+			$class = " " . trim($options["class"]);
 		}
 		$i = 0;
 		$output = "<div class=\"slideshow$class\" id=\"$selector\">\n";
 	    $json = array();
 	    $first = true;
 	    foreach ( $attachments as $att_id => $attachment ) {
-	    	$src = wp_get_attachment_image_src($att_id, $size);
+	    	$src = wp_get_attachment_image_src($att_id, $options["size"]);
 	    	if ($first) {
-	    		$src = wp_get_attachment_image_src($att_id, $size);
+	    		$src = wp_get_attachment_image_src($att_id, $options["size"]);
 		    	$output .= sprintf('<img src="%s" width="%s" height="%s" alt="%s" title="%s" />', $src[0], $src[1], $src[2], $attachment->post_title, $attachment->post_title);
 			    if ($caption || $navigation) {
 				    /* make sure caption spans width of image */
@@ -298,9 +293,9 @@ class sb_shortcodes
 	    $settings = (object) array(
 	        "nav" => $navigation,
 	        "caption" => $caption,
-	        "interval" => $interval,
-	        "transition" => $transition,
-	        "callback" => $callback,
+	        "interval" => $options["interval"],
+	        "transition" => $options["transition"],
+	        "callback" => $options["callback"],
 	        "usetitle" => $usetitle
 	    );
 		$output .= "  <script type=\"text/javascript\">\n  if (typeof slidesettings === 'undefined') { var slidesettings = {}; };\n  slidesettings['$selector'] = " . json_encode($settings) . ";\n if (typeof slides === 'undefined') { var slides = {}; };\nslides['$selector'] = " . json_encode($json) . ";</script>\n";
@@ -308,6 +303,52 @@ class sb_shortcodes
 		return $output;
 	}
 
+	/**
+	 * get_image_attachments
+	 * gets the image attachments for a post
+	 */
+	public static function get_image_attachments($options)
+	{
+		$attachments = array();
+		if ( !empty($options["include"]) ) {
+			$include = preg_replace( '/[^0-9,]+/', '', $options["include"] );
+			$_attachments = get_posts( array(
+				'include' => $include,
+				'post_status' => 'inherit',
+				'post_type' => 'attachment',
+				'post_mime_type' => 'image',
+				'order' => $options["order"],
+				'orderby' => $options["orderby"]
+			) );
+			foreach ( $_attachments as $key => $val ) {
+				$attachments[$val->ID] = $_attachments[$key];
+			}
+		} elseif ( !empty($options["exclude"]) ) {
+			$exclude = preg_replace( '/[^0-9,]+/', '', $options["exclude"] );
+			$attachments = get_children( array(
+				'post_parent' => $options["id"],
+				'exclude' => $exclude,
+				'post_status' => 'inherit',
+				'post_type' => 'attachment',
+				'post_mime_type' => 'image',
+				'numberposts' => -1,
+				'order' => $options["order"],
+				'orderby' => $options["orderby"]
+			) );
+		} else {
+			$attachments = get_children( array(
+				'post_parent' => $options["id"],
+				'post_status' => 'inherit',
+				'post_type' => 'attachment',
+				'post_mime_type' => 'image',
+				'numberposts' => -1,
+				'order' => $options["order"],
+				'orderby' => $options["orderby"]
+			) );
+		}
+		return $attachments;
+	}
+ 
 	/**
 	 * shortcode to generate comics pages
 	 */
