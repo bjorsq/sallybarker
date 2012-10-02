@@ -11,6 +11,7 @@
 require_once(dirname(__FILE__) . '/lib/post-types.php');
 require_once(dirname(__FILE__) . '/lib/shortcodes.php');
 require_once(dirname(__FILE__) . '/lib/widgets.php');
+require_once(dirname(__FILE__) . '/lib/menus.php');
 require_once(dirname(__FILE__) . '/lib/sidebars.php');
 
 /**
@@ -63,7 +64,7 @@ function sb_enqueue_scripts()
 {
 	wp_deregister_script( 'jquery' );
 	wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js' );
-	wp_register_script( 'sb', get_template_directory_uri() . '/js/sb.js', array('jquery') );
+	wp_register_script( 'sb', get_template_directory_uri() . '/js/sb.all.js', array('jquery') );
 	wp_enqueue_script( 'sb' );
 }
 

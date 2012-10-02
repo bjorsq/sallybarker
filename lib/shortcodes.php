@@ -145,7 +145,7 @@ class sb_shortcodes
 			'order'      => 'ASC',
 			'orderby'    => 'menu_order ID',
 			'id'         => $post->ID,
-			'full_size'  => 'large'
+			'full_size'  => 'large',
 			'thumb_size' => 'thumbnail',
 		    'class'      => '',
 			'include'    => '',
@@ -189,8 +189,8 @@ class sb_shortcodes
 			    "full_w" => $src[1],
 			    "full_h" => $src[2],
 			    "thumb_src" => $thumb[0],
-			    "thumb_w" = $thumb[1],
-			    "thumb_h" = $thumb[2],
+			    "thumb_w" => $thumb[1],
+			    "thumb_h" => $thumb[2],
 			    "title" => $attachment->post_title,
 			    "caption" => $attachment->post_excerpt,
 			    "description" => $attachment->post_content,
@@ -237,7 +237,7 @@ class sb_shortcodes
 			'include'    => '',
 			'exclude'    => '',
 			'callback'   => ''
-		), $attr));
+		), $attr);
 
 		$id = intval($id);
 

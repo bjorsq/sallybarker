@@ -17,14 +17,13 @@ class sb_sidebars
 {
 	/* prevents object instantiation */
 	private final function __construct() {}
-	private final function sb_widgets() {}
+	private final function sb_sidebars() {}
 
 	/* registers everything with the Wordpress API */
 	public static function register()
 	{
 		/* wait until theme is set up before adding any of these */
 		add_action( 'after_setup_theme', array('sb_sidebars', 'register_sidebars') );
-		add_action( 'after_setup_theme', array('sb_sidebars', 'register_menus') );
 	}
 
 	/* registers sidebars */
@@ -61,17 +60,6 @@ class sb_sidebars
 			'class'         => 'footer-sidebar',
 		) );
 	}
-
-	public static function register_menus()
-	{
-		register_nav_menus( array(
-			'top-bar' => 'Top bar menu',
-			'art-menu' => 'Art Categories Menu',
-			'work-menu' => 'Work Categories Menu',
-			'footer-menu' => 'Footer Menu'
-		) );
-	}
-
 
 } /* end class definition */
 

@@ -58,9 +58,10 @@
 					<!-- logo -->
 					<a class="brand" href="#">Sally Barker</a>
 
+
 					<!- top navbar -->
 					<div class="nav-collapse collapse">
-						<?php wp_nav_menu( array('menu' => 'top-bar') ); ?>
+						<?php sb_menus::top(); ?>
 					</div><!--/.nav-collapse -->
 				</div>
 			</div>
@@ -72,8 +73,6 @@
 			<div class="row-fluid">
 				<div class="span3">
 					<div class="well sidebar-nav">
-						<?php wp_nav_menu( array('menu' => 'art-menu') ); ?>
-						<?php wp_nav_menu( array('menu' => 'education-menu') ); ?>
 					</div><!--/.well -->
 				</div><!--/span3-->
 
