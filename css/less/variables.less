@@ -39,7 +39,7 @@
 // Links
 // -------------------------
 @linkColor:             #fc0;
-@linkColorHover:        darken(@linkColor, 15%);
+@linkColorHover:        lighten(@linkColor, 15%);
 
 
 // Typography
@@ -99,13 +99,13 @@
 
 // Dropdowns
 // -------------------------
-@dropdownBackground:            @white;
+@dropdownBackground:            darken(@bodyBackground, 5%);
 @dropdownBorder:                rgba(0,0,0,.2);
 @dropdownDividerTop:            #e5e5e5;
 @dropdownDividerBottom:         @white;
 
-@dropdownLinkColor:             @grayDark;
-@dropdownLinkColorHover:        @white;
+@dropdownLinkColor:             @linkColor;
+@dropdownLinkColorHover:        darken(@bodyBackground, 5%);
 @dropdownLinkColorActive:       @dropdownLinkColor;
 
 @dropdownLinkBackgroundActive:  @linkColor;

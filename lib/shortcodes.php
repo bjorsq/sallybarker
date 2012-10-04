@@ -169,7 +169,7 @@ class sb_shortcodes
 		}
 
 		$selector = "gallery-{$instance}";
-		$class = ' class="' . $type . '"';
+		$class = ' class="' . $class . '"';
 		$i = 0;
 		$output = "<div class=\"gallery\" id=\"$selector\">\n  <ul$class>\n";
 		$json = array();
@@ -394,6 +394,125 @@ class sb_shortcodes
 			}
 		}
 		return $out;
+	}
+
+	/**
+	 * carousel shortode
+	 */
+	public static function carousel_shortcode($attr)
+	{
+		global $post;
+
+		static $instance = 0;
+		$instance++;
+
+		/* make sure we have a valid orderby statement */
+		if ( isset( $attr['orderby'] ) ) {
+			$attr['orderby'] = sanitize_sql_orderby( $attr['orderby'] );
+			if ( !$attr['orderby'] ) {
+				unset( $attr['orderby'] );
+			}
+		}
+
+		$options = shortcode_atts(array(
+			'order'      => 'ASC',
+			'orderby'    => 'menu_order ID',
+			'id'         => $post->ID,
+			'size'  	 => 'large',
+			'interval'   => 5000,
+			'pause'      => 'hover',
+		    'class'      => '',
+			'include'    => '',
+			'exclude'    => ''
+		), $attr);
+
+		$options['id'] = intval($options['id']);
+
+		$attachments = self::get_image_attachments($options);
+
+		if ( empty($attachments) ) {
+			return '';
+		}
+
+		if ( is_feed() ) {
+			$output = "\n";
+			foreach ( $attachments as $att_id => $attachment ) {
+				$output .= wp_get_attachment_link($att_id, $options['size'], true) . "\n";
+			}
+			return $output;
+		}
+		return self::get_carousel_html($instance, $options, $attachments);
+	}
+
+	/**
+	 * Homepage carousel
+	 */
+	public static function homepage_carousel($attr)
+	{
+		static $instance = 0;
+		$instance++;
+
+		/* make sure we have a valid orderby statement */
+		if ( isset( $attr['orderby'] ) ) {
+			$attr['orderby'] = sanitize_sql_orderby( $attr['orderby'] );
+			if ( !$attr['orderby'] ) {
+				unset( $attr['orderby'] );
+			}
+		}
+
+		$options = shortcode_atts(array(
+			'order'      => 'ASC',
+			'orderby'    => 'menu_order ID',
+			'size'  	 => 'large',
+			'interval'   => 5000,
+			'pause'      => 'hover',
+		    'class'      => '',
+		    'post_type'  => 'art',
+			'exclude'    => '',
+			'limit'      => -1
+		), $attr);
+
+		/* get all pages of given post type */
+		$all_posts = get_posts( array(
+			'post_type' => $options['post_type'],
+			'numberposts' => $options['limit'],
+			'post_status' => 'publish',
+			'order'      => $options['order'],
+			'orderby'    => $options['orderby'],
+			'exclude'    => $options['exclude']
+		) );
+
+		$attachments = array();
+		if (count($all_posts)) {
+			foreach ($all_posts as $post) {
+				if (has_post_thumbnail($post->ID)) {
+					$tid = get_post_thumbnail_id($post->ID);
+					$attachments[$tid] = get_post($tid);
+					$attachments[$tid]->post_title = $post->post_title;
+					$attachments[$tid]->post_excerpt = $post->post_excerpt;
+				}
+			}
+			return self::get_carousel_html($instance, $options, $attachments);
+		}
+	}
+
+	private static function get_carousel_html($instance, $options, $attachments)
+	{
+		$selector = "carousel-{$instance}";
+		$class = ' class="carousel slide' . ($options['class'] != ''? ' ' . trim($options['class']): '') . '"';
+		$data_attr = sprintf(' data-interval="%s" data-pause="%s"', $options["interval"], $options["pause"]);
+		$first = true;
+		$output = printf('<div id="%s"%s><div class="carousel-inner">', $selector, $class);
+		foreach ( $attachments as $id => $attachment ) {
+	    	$src = wp_get_attachment_image_src($id, $options["size"]);
+	    	$class = $first? ' active': '';
+		    $output .= sprintf('<div class="item%s"><img src="%s" width="%s" height="%s" alt="%s" title="%s" /><div class="carousel-caption"><h4>%s</h4>%s</div></div>', $class, $src[0], $src[1], $src[2], esc_attr($attachment->post_title), $attachment->post_title, $attachment->post_excerpt);
+		    $first = false;
+		}
+		$output .= '<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>';
+		$output .= '<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>';
+		$output .= '</div>';
+		return $output;
 	}
 
 } /* end class definition */

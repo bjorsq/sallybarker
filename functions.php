@@ -64,7 +64,7 @@ function sb_enqueue_scripts()
 {
 	wp_deregister_script( 'jquery' );
 	wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js' );
-	wp_register_script( 'sb', get_template_directory_uri() . '/js/sb.all.js', array('jquery') );
+	wp_register_script( 'sb', get_template_directory_uri() . '/js/sb.all.js', array('jquery'), '1.0', true );
 	wp_enqueue_script( 'sb' );
 }
 

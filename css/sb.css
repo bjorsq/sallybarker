@@ -152,7 +152,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: #b38f00;
+  color: #ffdb4d;
   text-decoration: underline;
 }
 .container {
@@ -1954,8 +1954,8 @@ table [class*=span],
   margin-top: 6px;
 }
 .nav .dropdown-toggle:hover .caret {
-  border-top-color: #b38f00;
-  border-bottom-color: #b38f00;
+  border-top-color: #ffdb4d;
+  border-bottom-color: #ffdb4d;
 }
 /* move down carets for tabs */
 .nav-tabs .dropdown-toggle .caret {
@@ -2400,7 +2400,7 @@ table [class*=span],
   display: inline-block;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-bottom: 6px solid #ffffff;
+  border-bottom: 6px solid #020e12;
   position: absolute;
   top: -6px;
   left: 10px;
@@ -2413,7 +2413,7 @@ table [class*=span],
   top: auto;
 }
 .navbar-fixed-bottom .nav > li > .dropdown-menu:after {
-  border-top: 6px solid #ffffff;
+  border-top: 6px solid #020e12;
   border-bottom: 0;
   bottom: -6px;
   top: auto;
@@ -2903,7 +2903,7 @@ table [class*=span],
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  background-color: #ffffff;
+  background-color: #020e12;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
   *border-right-width: 2px;
@@ -2937,14 +2937,14 @@ table [class*=span],
   clear: both;
   font-weight: normal;
   line-height: 20px;
-  color: #333333;
+  color: #ffcc00;
   white-space: nowrap;
 }
 .dropdown-menu li > a:hover,
 .dropdown-menu li > a:focus,
 .dropdown-submenu:hover > a {
   text-decoration: none;
-  color: #ffffff;
+  color: #020e12;
   background-color: #ffcc00;
   background-color: #f5c400;
   background-image: -moz-linear-gradient(top, #ffcc00, #e6b800);
@@ -2957,7 +2957,7 @@ table [class*=span],
 }
 .dropdown-menu .active > a,
 .dropdown-menu .active > a:hover {
-  color: #ffffff;
+  color: #020e12;
   text-decoration: none;
   outline: 0;
   background-color: #ffcc00;
@@ -3025,12 +3025,12 @@ table [class*=span],
   border-color: transparent;
   border-style: solid;
   border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
+  border-left-color: #000000;
   margin-top: 5px;
   margin-right: -10px;
 }
 .dropdown-submenu:hover > a:after {
-  border-left-color: #ffffff;
+  border-left-color: #020e12;
 }
 .dropdown .dropdown-menu .nav-header {
   padding-left: 20px;
@@ -3495,7 +3495,7 @@ input[type="submit"].btn.btn-mini {
   border-radius: 0;
 }
 .btn-link:hover {
-  color: #b38f00;
+  color: #ffdb4d;
   text-decoration: underline;
   background-color: transparent;
 }

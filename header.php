@@ -29,6 +29,7 @@
 		<link rel="stylesheet" type="text/css" media="all" href="<?php echo get_stylesheet_directory_uri(); ?>/css/sb.css" />
 		<?php wp_head(); ?>
 
+  		<script>window.jQuery || document.write('<script src="<?php echo get_stylesheet_directory_uri(); ?>/js/libs/jquery-1.7.2.min.js"><\/script>')</script>
 		<!--[if lt IE 9]>
 		  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -56,7 +57,7 @@
 					</a>
 
 					<!-- logo -->
-					<a class="brand" href="#">Sally Barker</a>
+					<a class="brand" href="<?php echo get_bloginfo('url'); ?>">Sally Barker</a>
 
 
 					<!- top navbar -->
