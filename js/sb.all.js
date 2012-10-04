@@ -288,9 +288,6 @@ jQuery(function($){
 
 !function ($) {
 
-  "use strict"; // jshint ;_;
-
-
  /* CAROUSEL CLASS DEFINITION
   * ========================= */
 

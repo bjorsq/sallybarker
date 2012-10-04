@@ -71,12 +71,3 @@
 		<!-- main fluid container -->
 		<div class="container-fluid">
 
-			<div class="row-fluid">
-				<div class="span3">
-					<div class="well sidebar-nav">
-					</div><!--/.well -->
-				</div><!--/span3-->
-
-				<div class="span9">
-
-

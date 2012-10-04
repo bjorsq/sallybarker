@@ -34,8 +34,12 @@ class sb_shortcodes
 	    add_filter( 'gallery_style', array( 'sb_shortcodes', 'remove_gallery_css' ) );
 	    /* add uol gallery shortcode */
 		add_shortcode( 'gallery', array( 'sb_shortcodes', 'gallery_shortcode' ) );
-	    /* add uol slideshow shortcode */
+	    /* add comic shortcode */
 		add_shortcode( 'comic', array( 'sb_shortcodes', 'comic_shortcode' ) );
+	    /* add uol slideshow shortcode */
+		add_shortcode( 'carousel', array( 'sb_shortcodes', 'carousel_shortcode' ) );
+	    /* add uol slideshow shortcode */
+		add_shortcode( 'homepage_carousel', array( 'sb_shortcodes', 'homepage_carousel_shortcode' ) );
 	}
 
 	/* gets images for a post and puts threm in a slideshow */
@@ -447,7 +451,7 @@ class sb_shortcodes
 	/**
 	 * Homepage carousel
 	 */
-	public static function homepage_carousel($attr)
+	public static function homepage_carousel_shortcode($attr)
 	{
 		static $instance = 0;
 		$instance++;
@@ -506,7 +510,7 @@ class sb_shortcodes
 		foreach ( $attachments as $id => $attachment ) {
 	    	$src = wp_get_attachment_image_src($id, $options["size"]);
 	    	$class = $first? ' active': '';
-		    $output .= sprintf('<div class="item%s"><img src="%s" width="%s" height="%s" alt="%s" title="%s" /><div class="carousel-caption"><h4>%s</h4>%s</div></div>', $class, $src[0], $src[1], $src[2], esc_attr($attachment->post_title), $attachment->post_title, $attachment->post_excerpt);
+		    $output .= sprintf('<div class="item%s"><img src="%s" width="%s" height="%s" alt="%s" title="%s" /><div class="carousel-caption"><h4>%s</h4>%s</div></div>', $class, $src[0], $src[1], $src[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), $attachment->post_title, $attachment->post_excerpt);
 		    $first = false;
 		}
 		$output .= '<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>';

@@ -30,6 +30,7 @@ class sb_menus
 	{
 		register_nav_menus( array(
 			'top-bar' => 'Top bar menu',
+			'side-bar' => 'Sidebar menu',
 			'footer' => 'Footer Menu'
 		) );
 	}
@@ -49,6 +50,14 @@ class sb_menus
 			'menu' => 'top-bar',
 			'items_wrap' => '<ul id="%1$s" class="%2$s nav" role="navigation">%3$s</ul>',
 			'walker' => new sb_walker_nav_menu
+		) );
+	}
+	/* output menu for single pages */
+	public static function single()
+	{
+		wp_nav_menu( array(
+			'menu' => 'side-bar',
+			'items_wrap' => '<ul id="%1$s" class="%2$s nav" role="navigation">%3$s</ul>'
 		) );
 	}
 
