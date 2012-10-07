@@ -97,20 +97,6 @@
 @inputDisabledBackground:       @grayLighter;
 @formActionsBackground:         #f5f5f5;
 
-// Dropdowns
-// -------------------------
-@dropdownBackground:            darken(@bodyBackground, 5%);
-@dropdownBorder:                rgba(0,0,0,.2);
-@dropdownDividerTop:            #e5e5e5;
-@dropdownDividerBottom:         @white;
-
-@dropdownLinkColor:             @linkColor;
-@dropdownLinkColorHover:        darken(@bodyBackground, 5%);
-@dropdownLinkColorActive:       @dropdownLinkColor;
-
-@dropdownLinkBackgroundActive:  @linkColor;
-@dropdownLinkBackgroundHover:   @dropdownLinkBackgroundActive;
-
 
 
 // COMPONENT VARIABLES
@@ -156,7 +142,7 @@
 
 // Navbar
 // -------------------------
-@navbarCollapseWidth:             979px;
+@navbarCollapseWidth:             767px;
 
 @navbarHeight:                    40px;
 @navbarBackgroundHighlight:       #ffffff;
@@ -181,7 +167,7 @@
 @navbarInverseLinkColor:                 @grayLight;
 @navbarInverseLinkColorHover:            @white;
 @navbarInverseLinkColorActive:           @navbarInverseLinkColorHover;
-@navbarInverseLinkBackgroundHover:       transparent;
+@navbarInverseLinkBackgroundHover:       @navbarInverseBackgroundHighlight;
 @navbarInverseLinkBackgroundActive:      @navbarInverseBackground;
 
 @navbarInverseSearchBackground:          lighten(@navbarInverseBackground, 25%);
@@ -190,6 +176,20 @@
 @navbarInverseSearchPlaceholderColor:    #ccc;
 
 @navbarInverseBrandColor:                @navbarInverseLinkColor;
+
+// Dropdowns
+// -------------------------
+@dropdownBackground:            @navbarInverseBackground;
+@dropdownBorder:                @navbarInverseBorder;
+@dropdownDividerTop:            #e5e5e5;
+@dropdownDividerBottom:         @white;
+
+@dropdownLinkColor:             @navbarInverseLinkColor;
+@dropdownLinkColorHover:        @navbarInverseLinkColorHover;
+@dropdownLinkColorActive:       @navbarInverseLinkColorHover;
+
+@dropdownLinkBackgroundActive:  @navbarInverseLinkBackgroundActive;
+@dropdownLinkBackgroundHover:   @navbarInverseLinkBackgroundHover;
 
 
 // Pagination
