@@ -111,7 +111,7 @@ class sb_walker_nav_menu extends Walker_Nav_Menu
 
 		/* link attributes */
 		$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
-		$attributes .= (! empty( $item->url ) && ! ( $depth == 0 && $item->title != 'C.V.' ) ) ? ' href="'   . esc_attr( $item->url        ) .'"' : ' href="#"';
+		$attributes .= (! empty( $item->url ) && ! ( $depth == 0 && $item->title != 'C.V.' ) ) ? ' href="'   . esc_attr( $item->url        ) .'" data-target="#"' : ' href="#"';
 		$attributes .= ' class="menu-link ' . ( $depth > 0 ? 'sub-menu-link' : 'dropdown-toggle' ) . '"';
 		$attributes .= ( $depth == 0 && $item->title != 'C.V.' )? ' data-toggle="dropdown"': '';
 

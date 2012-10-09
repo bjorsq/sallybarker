@@ -506,7 +506,7 @@ class sb_shortcodes
 		$class = ' class="carousel slide' . ($options['class'] != ''? ' ' . trim($options['class']): '') . '"';
 		$data_attr = sprintf(' data-interval="%s" data-pause="%s"', $options["interval"], $options["pause"]);
 		$first = true;
-		$output = printf('<div id="%s"%s><div class="carousel-inner">', $selector, $class);
+		$output = sprintf('<div id="%s"%s><div class="carousel-inner">', $selector, $class);
 		foreach ( $attachments as $id => $attachment ) {
 	    	$src = wp_get_attachment_image_src($id, $options["size"]);
 	    	$class = $first? ' active': '';
@@ -515,7 +515,7 @@ class sb_shortcodes
 		}
 		$output .= '<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>';
 		$output .= '<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>';
-		$output .= '</div>';
+		$output .= '</div></div>';
 		return $output;
 	}
 

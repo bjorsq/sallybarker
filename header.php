@@ -69,5 +69,5 @@
 		</div>
 
 		<!-- main fluid container -->
-		<div class="container-fluid">
+		<div class="container">
 

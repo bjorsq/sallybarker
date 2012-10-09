@@ -12,6 +12,8 @@ var slides = {},
 	slidetimer = null;
 
 jQuery(function($){
+	/* carousels */
+	$('.carousel').carousel();
 	/* make slideshows */
 	if ($('.slideshow').length) {
 		$('.slideshow').each(function(idx){
