@@ -30,7 +30,8 @@ class sb_menus
 	{
 		register_nav_menus( array(
 			'top-bar' => 'Top bar menu',
-			'side-bar' => 'Sidebar menu',
+			'art-menu' => 'Art menu',
+			'education-menu' => 'Education menu',
 			'footer' => 'Footer Menu'
 		) );
 	}
@@ -53,12 +54,14 @@ class sb_menus
 		) );
 	}
 	/* output menu for single pages */
-	public static function single()
+	public static function menu($which = 'art')
 	{
-		wp_nav_menu( array(
-			'menu' => 'side-bar',
-			'items_wrap' => '<ul id="%1$s" class="%2$s nav" role="navigation">%3$s</ul>'
-		) );
+		if ( in_array($which, array('art','education')) ) {
+			wp_nav_menu( array(
+				'menu' => $which . '-bar',
+				'items_wrap' => '<ul id="%1$s" class="%2$s nav ' . $which . '-menu" role="navigation">%3$s</ul>'
+			) );
+		}
 	}
 
 

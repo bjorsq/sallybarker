@@ -8,7 +8,7 @@
 ?>
 			<div class="row-fluid">
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-					<?php echo do_shortcode('[carousel]'); ?>
+					<?php echo do_shortcode('[gallery]'); ?>
 					<header class="entry-header">
 						<h1 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( 'Permalink to %s', the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
 						<?php if ( 'post' == get_post_type() ) : ?>
@@ -18,7 +18,7 @@
 						<?php endif; ?>
 					</header><!-- .entry-header -->
 					<div class="well sidebar-nav span3">
-						<?php sb_menus::single($post->post_type); ?>
+						<?php sb_menus::menu($post->post_type); ?>
 					</div><!--/.well -->
 					<div class="entry-content span9">
 						<?php the_content( 'Continue reading <span class="meta-nav">&rarr;</span>' ); ?>

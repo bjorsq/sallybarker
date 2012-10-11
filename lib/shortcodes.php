@@ -172,22 +172,30 @@ class sb_shortcodes
 			return $output;
 		}
 
+		if (trim($class) !== '') {
+			$class = ' ' . $class;
+		}
+
 		$selector = "gallery-{$instance}";
-		$class = ' class="' . $class . '"';
-		$i = 0;
-		$output = "<div class=\"gallery\" id=\"$selector\">\n  <ul$class>\n";
+		$output = '<div class="gallery' . $class . '" id="' . $selector . '">';
+		$thumbs = '<div class="thumbnails"><ul>';
 		$json = array();
 		$options["max_w"] = 0;
 		$options["max_h"] = 0;
+		$feature = false;
 		foreach ( $attachments as $id => $attachment ) {
 			/* get full size image details */
 	    	$src = wp_get_attachment_image_src($id, $options["full_size"]);
+	    	/* collect html of first image for output */
+	    	if ($feature === false) {
+	    		$feature = sprintf('<div class="feature"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /><div class="caption"><h3>%s</h3><p>%s</p></div></div>', $src[0], $src[1], $src[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt));
+	    	}
 	    	/* set max width and height */
 	    	$options["max_w"] = max($options["max_w"], $src[1]);
 	    	$options["max_h"] = max($options["max_h"], $src[2]);
 	    	/* get thumbnail image details */
 	    	$thumb = wp_get_attachment_image_src($id, $options["thumb_size"]);
-		    $output .= sprintf('<li class="gallery-item"><img src="%s" width="%s" height="%s" alt="%s" title="%s" /></li>', $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title));
+		    $thumbs .= sprintf('<li class="gallery-item"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /></li>', $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt));
 	    	$json[] = (object) array(
 			    "full_src" => $src[0],
 			    "full_w" => $src[1],
@@ -202,8 +210,12 @@ class sb_shortcodes
 			);
 		}
 	    $settings = (object) $options;
-		$output .= "</ul>\n<script type=\"text/javascript\">\n  if (typeof gallerysettings === 'undefined') { var gallerysettings = {}; };\n  gallerysettings['$selector'] = " . json_encode($settings) . ";\n if (typeof images === 'undefined') { var images = {}; };\nimages['$selector'] = " . json_encode($json) . ";</script>\n";
-		$output .= "<br style=\"clear: both;\" />\n</div>\n";
+	    $output .= $feature;
+	    if (count($attachments) > 1) {
+	    	$output .= $thumbs;
+	    }
+		$output .= "<script type=\"text/javascript\">\n  if (typeof gallerysettings === 'undefined') { var gallerysettings = {}; };\n  gallerysettings['$selector'] = " . json_encode($settings) . ";\n if (typeof galleryimages === 'undefined') { var galleryimages = {}; };\ngalleryimages['$selector'] = " . json_encode($json) . ";</script>\n";
+		$output .= '</div>';
 		return $output;
 	}
 
