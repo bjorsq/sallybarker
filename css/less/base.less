@@ -5,6 +5,10 @@
 
 // Body reset
 // -------------------------
+html {
+  background: @bodyBackground;
+  height:100%
+}
 
 body {
   margin: 0;
@@ -12,10 +16,34 @@ body {
   font-size: @baseFontSize;
   line-height: @baseLineHeight;
   color: @textColor;
-  background-color: @bodyBackground;
-  padding:60px 0 40px 0;
+  background: @bodyBackground url(../images/body-bg.jpg) repeat-x top left;
+  height:100%;
 }
 
+#wrap {
+    min-height:100%
+}
+div.container {
+  padding:60px 0 358px 0;
+  overflow:auto;
+}
+
+div.footer {
+  position: relative;
+  background: @bodyBackground url(../images/footer-bg.jpg) repeat-x bottom center;
+  width:100%;
+  margin-top:-358px;
+  height:358px;
+  clear:both;
+}
+/*Opera Fix*/
+body:before {
+  content:"";
+  height:100%;
+  float:left;
+  width:0;
+  margin-top:-32767px;
+}
 
 // Links
 // -------------------------

@@ -6,23 +6,24 @@
  * @subpackage sallybarker.org
  */
 ?>
-			<div class="row-fluid">
+			</div><!-- #main fluid container -->
+		</div><!-- #wrap -->
 
-				<footer>
-					<div class="span3">
-						<?php wp_nav_menu( array('menu' => 'footer-menu') ); ?>
-					</div>
-					<div class="span6">
+		<div class="footer">
 
-					</div>
-					<div class="span3">
+			<footer>
+				<div class="span3">
+					<?php wp_nav_menu( array('menu' => 'footer-menu') ); ?>
+				</div>
+				<div class="span6">
 
-					</div>
-				</footer>
+				</div>
+				<div class="span3">
+
+				</div>
+			</footer>
 				
-			</div>
-
-		</div><!-- #main fluid container -->
+		</div>
 
 	<?php wp_footer(); ?>
 

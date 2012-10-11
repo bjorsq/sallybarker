@@ -33,7 +33,11 @@
 		<!--[if lt IE 9]>
 		  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-
+		<!--[if !IE 7]>
+			<style type="text/css">
+				#wrap {display:table;height:100%}
+			</style>
+		<![endif]-->
 		<!-- Le fav and touch icons -->
 		<link rel="shortcut icon" href="<?php echo get_stylesheet_directory_uri(); ?>/images/icons/favicon.ico">
 		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo get_stylesheet_directory_uri(); ?>/images/icons/apple-touch-icon-144-precomposed.png">
@@ -44,30 +48,32 @@
 
 	<body <?php body_class(); ?>>
 
-		<!-- top navbar -->
-		<div class="navbar navbar-inverse navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container-fluid">
+		<div id="wrap">
 
-					<!-- menu button -->
-					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</a>
+			<!-- top navbar -->
+			<div class="navbar top-navbar">
+				<div class="navbar-inner">
+					<div class="container-fluid">
 
-					<!-- logo -->
-					<a class="brand" href="<?php echo get_bloginfo('url'); ?>">Sally Barker</a>
+						<!-- menu button -->
+						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</a>
+
+						<!-- logo -->
+						<a class="brand" href="<?php echo get_bloginfo('url'); ?>">Sally Barker</a>
 
 
-					<!- top navbar -->
-					<div class="nav-collapse collapse">
-						<?php sb_menus::top(); ?>
-					</div><!--/.nav-collapse -->
+						<!- top navbar -->
+						<div class="nav-collapse collapse">
+							<?php sb_menus::top(); ?>
+						</div><!--/.nav-collapse -->
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<!-- main fluid container -->
-		<div class="container">
+			<!-- main fluid container -->
+			<div class="container">
 

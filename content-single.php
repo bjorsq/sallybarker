@@ -61,3 +61,4 @@
 						<?php edit_post_link( 'Edit', '<span class="edit-link">', '</span>' ); ?>
 					</footer><!-- #entry-meta -->
 				</article><!-- #post-<?php the_ID(); ?> -->
+			</div>
