@@ -188,7 +188,7 @@ class sb_shortcodes
 	    	$src = wp_get_attachment_image_src($id, $options["full_size"]);
 	    	/* collect html of first image for output */
 	    	if ($feature === false) {
-	    		$feature = sprintf('<div class="feature"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /><div class="caption"><h3>%s</h3><p>%s</p></div></div>', $src[0], $src[1], $src[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt));
+	    		$feature = sprintf('<div class="figure"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /><div class="figcaption"><h3>%s</h3><p>%s</p></div></div>', $src[0], $src[1], $src[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt));
 	    	}
 	    	/* set max width and height */
 	    	$options["max_w"] = max($options["max_w"], $src[1]);
