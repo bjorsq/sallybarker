@@ -10,6 +10,46 @@
     padding-left: 20px;
     padding-right: 20px;
   }
+  .container {
+    width:100%;
+  }
+  .gallery {
+    .figure {
+      width:100% !IMPORTANT;
+      height:auto !IMPORTANT;
+      img {
+        width:100% !IMPORTANT;
+        height:auto !IMPORTANT;
+      }
+      .figcaption {
+        left:5px;
+        bottom:5px;
+        padding:5px;
+        .border-radius(5px);
+        h3 {
+          font-size:14px;
+        }
+      }
+    }
+    .thumbnails {
+      width:100% !IMPORTANT;
+      ul {
+        width:100% !IMPORTANT;
+        li {
+          a {
+            margin-right:7px;
+            margin-left:3px;
+            margin-bottom:7px;
+
+            img {
+              width:75px;
+              height:auto;
+            }
+          }
+        }
+      }
+    }
+  }
   // Negative indent the now static "fixed" navbar
   .navbar-fixed-top,
   .navbar-fixed-bottom,

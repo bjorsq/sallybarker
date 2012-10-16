@@ -20,7 +20,6 @@
 
 !function ($) {
 
-  "use strict"; // jshint ;_;
 
 
  /* COLLAPSE PUBLIC CLASS DEFINITION

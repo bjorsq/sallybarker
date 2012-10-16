@@ -149,9 +149,13 @@ class sb_shortcodes
 			'order'      => 'ASC',
 			'orderby'    => 'menu_order ID',
 			'id'         => $post->ID,
-			'full_size'  => 'large',
+			'full_size'  => 'full-image',
 			'thumb_size' => 'thumbnail',
 		    'class'      => '',
+		    'interval'   => 5000,
+		    'transition' => 500,
+		    'loop'       => true,
+		    'caption'    => true,
 			'include'    => '',
 			'exclude'    => ''
 		), $attr);
@@ -178,24 +182,29 @@ class sb_shortcodes
 
 		$selector = "gallery-{$instance}";
 		$output = '<div class="gallery' . $class . '" id="' . $selector . '">';
-		$thumbs = '<div class="thumbnails"><ul>';
 		$json = array();
 		$options["max_w"] = 0;
 		$options["max_h"] = 0;
+		$thumbs_w = 3;
 		$feature = false;
+		$thumbs = '';
+		$idx = 0;
 		foreach ( $attachments as $id => $attachment ) {
 			/* get full size image details */
 	    	$src = wp_get_attachment_image_src($id, $options["full_size"]);
 	    	/* collect html of first image for output */
 	    	if ($feature === false) {
-	    		$feature = sprintf('<div class="figure"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /><div class="figcaption"><h3>%s</h3><p>%s</p></div></div>', $src[0], $src[1], $src[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt));
+	    		$feature = sprintf('<div class="figure"><img src="%s" alt="%s" title="%s" data-caption="%s" /><div class="figcaption"><h3>%s</h3>%s</div></div>', $src[0], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt), apply_filters('the_title', $attachment->post_title), apply_filters('the_content', $attachment->post_excerpt));
 	    	}
 	    	/* set max width and height */
 	    	$options["max_w"] = max($options["max_w"], $src[1]);
 	    	$options["max_h"] = max($options["max_h"], $src[2]);
 	    	/* get thumbnail image details */
 	    	$thumb = wp_get_attachment_image_src($id, $options["thumb_size"]);
-		    $thumbs .= sprintf('<li class="gallery-item"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /></li>', $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt));
+	    	$thumbs_w += ($thumb[1] + 15);
+	    	$class = ($idx == 0)? ' active': '';
+		    $thumbs .= sprintf('<li><a href="%s" class="thumb-link%s" rel="slide%d"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /></a></li>', $src[0], $class, $idx, $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt));
+		    $idx++;
 	    	$json[] = (object) array(
 			    "full_src" => $src[0],
 			    "full_w" => $src[1],
@@ -212,7 +221,7 @@ class sb_shortcodes
 	    $settings = (object) $options;
 	    $output .= $feature;
 	    if (count($attachments) > 1) {
-	    	$output .= $thumbs;
+		    $output .= sprintf('<div class="thumbnails"><ul style="width:%dpx">%s</ul></div>', $thumbs_w, $thumbs);
 	    }
 		$output .= "<script type=\"text/javascript\">\n  if (typeof gallerysettings === 'undefined') { var gallerysettings = {}; };\n  gallerysettings['$selector'] = " . json_encode($settings) . ";\n if (typeof galleryimages === 'undefined') { var galleryimages = {}; };\ngalleryimages['$selector'] = " . json_encode($json) . ";</script>\n";
 		$output .= '</div>';
@@ -246,7 +255,7 @@ class sb_shortcodes
 			'size'       => 'medium',
 		    'class'      => '',
 		    'caption'    => true,
-		    'usetitle'   => false,
+		    'usetitle'   => true,
 		    'navigation' => true,
 		    'interval'   => 5000,
 		    'transition' => 500,

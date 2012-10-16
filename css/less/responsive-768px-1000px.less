@@ -3,7 +3,23 @@
 // --------------------------------------------------
 
 
-@media (min-width: 768px) and (max-width: 979px) {
+@media (min-width: 768px) and (max-width: 1000px) {
+	.container {
+		width:100%;
+	}
+	.gallery {
+		.figure {
+			width:100% !IMPORTANT;
+			height:auto !IMPORTANT;
+			img {
+				width:100% !IMPORTANT;
+				height:auto !IMPORTANT;
+			}
+		}
+		.thumbnails {
+			width:100% !IMPORTANT;
+		}
+	}
 
   // Fixed grid
   #grid > .core(@gridColumnWidth768, @gridGutterWidth768);

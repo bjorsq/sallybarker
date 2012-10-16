@@ -53,13 +53,15 @@ class sb_menus
 			'walker' => new sb_walker_nav_menu
 		) );
 	}
+
 	/* output menu for single pages */
 	public static function menu($which = 'art')
 	{
 		if ( in_array($which, array('art','education')) ) {
 			wp_nav_menu( array(
-				'menu' => $which . '-bar',
-				'items_wrap' => '<ul id="%1$s" class="%2$s nav ' . $which . '-menu" role="navigation">%3$s</ul>'
+				'menu' => $which . '-menu',
+				'items_wrap' => '<ul id="%1$s" class="%2$s nav ' . $which . '-menu" role="navigation">%3$s</ul>',
+				'walker' => new sb_walker_page_menu
 			) );
 		}
 	}
@@ -94,7 +96,7 @@ class sb_walker_nav_menu extends Walker_Nav_Menu
   
 	// add main/sub classes to li's and links
 	function start_el( &$output, $item, $depth, $args ) {
-		global $wp_query;
+		global $wp_query, $post;
 		$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' ); // code indent
 
 		// depth dependent classes
@@ -103,14 +105,14 @@ class sb_walker_nav_menu extends Walker_Nav_Menu
 			( $depth >=2 ? 'sub-sub-menu-item' : '' ),
 			'menu-item-depth-' . $depth
 		);
-		$depth_class_names = esc_attr( implode( ' ', $depth_classes ) );
+		$extra_class_names = esc_attr( implode( ' ', $depth_classes ) );
 
 		// passed classes
 		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
 		$class_names = esc_attr( implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item ) ) );
 
 		// build html
-		$output .= $indent . '<li id="nav-menu-item-'. $item->ID . '" class="' . $depth_class_names . ' ' . $class_names . '">';
+		$output .= $indent . '<li id="nav-menu-item-'. $item->ID . '" class="' . $extra_class_names . ' ' . $class_names . '">';
 
 		/* link attributes */
 		$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
@@ -124,6 +126,51 @@ class sb_walker_nav_menu extends Walker_Nav_Menu
 			$args->link_before,
 			apply_filters( 'the_title', $item->title, $item->ID ),
 			( ( $depth == 0 && $item->title != 'C.V.' )? '<b class="caret"></b>': $args->link_after ),
+			$args->after
+		);
+
+		// build html
+		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
+	}
+}
+
+/**
+ * Custom walker for top menu bar
+ */
+class sb_walker_page_menu extends Walker_Nav_Menu 
+{
+	/* add classes to ul sub-menus */
+	function start_lvl( &$output, $depth ) {
+
+		$output .= "\n" . $indent . '<ul class="' . $class_names . '" role="menu">' . "\n";
+	}
+  
+	// add main/sub classes to li's and links
+	function start_el( &$output, $item, $depth, $args ) {
+		global $wp_query, $post;
+		
+		$extra_class_names = 'post-id-' . $post->ID . ' post-type-' . $post->post_type . ' item-id-' . $item->ID;
+		// taxonomy dependent classes
+		$extra_class_names = has_term( $item->object_id, $item->object, $post) ? 'active ': ''; 
+
+		// passed classes
+		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
+		$class_names = esc_attr( implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item ) ) );
+
+		// build html
+		$output .= $indent . '<li id="nav-menu-item-'. $item->ID . '" class="' . $extra_class_names . $class_names . '">';
+
+		/* link attributes */
+		$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
+		$attributes .= ! empty( $item->url ) ? ' href="'   . esc_attr( $item->url        ) .'"' : ' href="#"';
+		$attributes .= ' class="menu-link"';
+
+		$item_output = sprintf( '%1$s<a%2$s>%3$s%4$s%5$s</a>%6$s',
+			$args->before,
+			$attributes,
+			$args->link_before,
+			apply_filters( 'the_title', $item->title, $item->ID ),
+			$args->link_after,
 			$args->after
 		);
 

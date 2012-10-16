@@ -12,7 +12,7 @@ var slidetimer = null,
 
 jQuery(function($){
 	/* carousels */
-	$('.carousel').carousel();
+	//$('.carousel').carousel();
 	/* make slideshows */
 	if ($('.slideshow').length) {
 		$('.slideshow').each(function(idx){
@@ -120,38 +120,126 @@ jQuery(function($){
 		return false;
 	});
 
+	var loadImage = function(s)
+	{
+		console.log(s);
+		var cid = s.cid,
+			loop = s.loop,
+			img_idx = s.img_idx,
+			$c = $('#'+s.cid),
+			$f = $('.figure', $c),
+			t = galleryimages[cid],
+			/* get current image */
+			cur = $.data($c[0], 'galleryData').currentImage,
+			/* get next image */
+			nxt = ((cur + 1) >= t.length)? 0: (cur + 1),
+			/* time between slides */
+			interval = gallerysettings[cid].interval || 5000,
+			/* duration of transition */
+			transition = gallerysettings[cid].transition || 500,
+			/* create a new image object to load the next image */
+			img = new Image();
+		console.log($.data($c[0], 'galleryData').currentImage);
+		console.log("preparing to load image");
+		console.log("image index: "+img_idx);
+		if (img_idx === false) {
+			img_idx = nxt;
+			console.log('image index set to next available: '+nxt);
+		}
+		if (t[img_idx]) {
+			console.log("loading image:"+t[img_idx].full_src);
+			/* load image */
+			img.onload = function() {
+				var cap;
+				console.log("image loaded - adding slide and fading in");
+				$('<img src="'+t[img_idx].full_src+'" title="'+t[img_idx].title+'" alt="'+t[img_idx].title+'" data-caption="'+t[img_idx].caption+'" />').css({'opacity':0,'position':'absolute','left':0,'top':0}).appendTo($f);
+				$.data($c[0], 'galleryData', {'currentImage':img_idx});
+				if (transition == 0) {
+					$('img:last', $f).css({'opacity':1,'position':'relative'});
+					$('img:first', $f).remove();
+			        console.log("fade in complete in 0s (no transition)");
+					if (loop) {
+						console.log('looping loadImage for next image in sequence');
+						gallerytimer = setTimeout(function(){loadImage({'cid':cid,'img_idx':false,'loop':true});}, interval);
+					}
+				} else {
+					//$('img:first', $c).fadeOut(transition);
+					$('img:last', $f).animate({'opacity':1}, transition, function(){
+						$('img:first', $f).remove();
+						$(this).css({'position':'relative'})
+						if ($.browser.msie) {
+							this.style.removeAttribute('filter');
+						}
+						if (loop) {
+							gallerytimer = setTimeout(function(){loadImage({'cid':cid,'img_idx':false,'loop':true});}, interval);
+						}
+					});
+				}
+		        /* make the thumbnail active */
+		        $('.thumb-link', $c).removeClass('active');
+			    $('.thumb-link', $c).eq(img_idx).addClass('active');
+				if (gallerysettings[cid] && gallerysettings[cid].caption) {
+					cap = '<h3>'+t[img_idx].title+'</h3><p>'+t[img_idx].caption+'</p>';
+					if (transition == 0) {
+						$('.figcaption', $c).html(cap);
+					} else {
+						$('.figcaption', $c).fadeOut((transition / 2), function(){
+							$(this).html(cap);
+							if ($.trim(cap) !== "") {
+								$(this).fadeIn((transition / 2));
+							}
+						});
+					}
+				}
+				reorganiseThumbnails(cid, img_idx);
+			}
+			img.src = t[img_idx].full_src;
+		}
+	},
+	reorganiseThumbnails = function(cid, img_idx)
+	{
+		var $c = $('#'+cid),
+			t = galleryimages[cid],
+			$t = $('.thumbnails ul', $c);
+		console.log($t.width());
+		console.log($c.width());
+		if ($t.width() > $c.width()) {
 
+
+		}
+	}
 	if ($('.gallery').length) {
 		$('.gallery').each(function(idx){
-			var $c = $(this), cid = $c.attr("id"), $f = $('.figure', this), $t = $('.thumbnails', this), interval, img;
-			/* show the caption? */
-			if (gallerysettings[cid] && !gallerysettings[cid].caption) {
-				$('.figcaption', this).hide();
-			}
+			var $c = $(this), 
+				cid = $c.attr("id"), 
+				interval;
+			/* show the caption on mouseover */
+			$('.figure', this).on({
+				'mouseenter':function(){
+					$('.figcaption', this).fadeIn(200);
+				},
+				'mouseleave':function(){
+					$('.figcaption', this).fadeOut(200);
+				}
+			});
 			/* check to see if there is more than one image */
 			if (galleryimages[cid] && galleryimages[cid].length > 1) {
 				/* time between slides */
 				interval = gallerysettings[cid].interval || 5000;
-				img = $('img:first', $t);
 				/* set some data on the main image container */
 				$.data($c[0], 'galleryData', {'currentImage':0});
-				$f.css({'width':img.attr("width")+'px','height':img.attr("height")+'px','float':'none','clear':'left'});
-				/* position image */
-				img.css({'position':'absolute','left':0,'top':0});
 				/* run slideshow */
-				gallerytimer = setTimeout(function(){loadImage({'cid':cid,'img_idx':1,'loop':true});}, interval);
-				$('.thumbnails a').click(function(e){
+				gallerytimer = setTimeout(function(){loadImage({'cid':cid,'img_idx':false,'loop':true});}, interval);
+				$('.thumb-link', this).on('click',function(e){
 					/* pause slideshow */
 					clearTimeout(gallerytimer);
 					/* get container */
 					var $c = $(this).parents('.gallery'),
 						cid = $c.attr("id"),
 						/* get target slide index */
-						targetSlide = parseInt($(this).attr("rel"));
-					/* set currentSlide to the previous slide */
-					$.data($c[0], 'slideData', {'currentSlide':((targetSlide == 0)? (slides[cid].length - 1): (targetSlide - 1))});
-					/* start the slideshow again */
-					go(cid);
+						targetSlide = parseInt($(this).attr("rel").substr(5));
+					/* set current image */
+					loadImage({'cid':cid,'img_idx':targetSlide,'loop':false});
 					e.preventDefault();
 					return false;
 				});
@@ -160,58 +248,5 @@ jQuery(function($){
 			}
 		});
 	}
-	function loadImage(s)
-	{
-		var $c = $('#'+s.cid),
-			$f = $('.figure', $c),
-			loop = s.loop,
-			t = galleryimages[cid],
-			cur = $.data($c[0], 'galleryData').currentImage,
-			nxt = ((cur + 1) >= t.length)? 0: (cur + 1),
-			/* time between slides */
-			interval = gallerysettings[s.cid].interval || 5000,
-			/* duration of transition */
-			transition = gallerysettings[s.cid].transition || 500,
-			/* create a new image object to load the next image */
-			img = new Image();
-		/* load next image */
-		img.onload = function() {
-			var cap;
-			$('<img src="'+t[nxt].src+'" title="'+t[nxt].title+'" alt="'+t[nxt].title+'" data-caption="'+t[nxt].caption+'" />').css({'opacity':0,'position':'absolute','left':0,'top':0}).appendTo($f);
-			if (transition == 0) {
-				$('img:last', $f).css({'opacity':1});
-				$('img:first', $f).remove();
-				$.data($c[0], 'galleryData', {'currentImage':nxt});
-				if (loop) {
-					gallerytimer = setTimeout(function(){go(cid, interval, transition);}, interval);
-				}
-			} else {
-				$('img:first', $c).fadeOut(transition);
-				$('img:last', $c).animate({'opacity':1}, transition, function(){
-					$('img:first', $c).remove();
-					if ($.browser.msie) {
-						this.style.removeAttribute('filter');
-					}
-					$.data($c[0], 'galleryData', {'currentImage':nxt});
-					if (loop) {
-						gallerytimer = setTimeout(function(){go(cid, interval, transition);}, interval);
-					}
-				});
-			}
-			if (gallerysettings[cid] && gallerysettings[cid].caption) {
-				cap = '<h3>'+s[nxt].title+'</h3><p>'+s[nxt].caption+'</p>';
-				if (transition == 0) {
-					$('.figcaption', $c).html(cap);
-				} else {
-					$('.figcaption', $c).fadeOut((transition / 2), function(){
-						$(this).html(cap);
-						if ($.trim(cap) !== "") {
-							$(this).fadeIn((transition / 2));
-						}
-					});
-				}
-			}
-		}
-		img.src = s[nxt].src;
-	}
+
 });
