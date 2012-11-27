@@ -36,6 +36,8 @@ class sb_post_types
 		add_action( 'right_now_content_table_end', array('sb_post_types', 'add_post_type_counts') );
 	 	/* add filter to update messages */ 
 		add_filter( 'post_updated_messages', array('sb_post_types', 'updated_messages' ) );
+		/* add filter to put items in order on category archive pages */
+		add_action( 'pre_get_posts', array('sb_post_types', 'put_in_menu_order'), 1 );
 	}
 
 	/**
@@ -244,6 +246,17 @@ class sb_post_types
 			10 => sprintf( 'Draft updated. <a target="_blank" href="%s">Preview page</a>', esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
 		);
 		return $messages;
+	}
+
+	/**
+	 * puts posts in menu order on category archive pages
+	 */
+	function put_in_menu_order( $query ) 
+	{
+		if ( ! is_admin() && is_tax() ) {
+			$query->query_vars['orderby'] = 'menu_order';
+			return;
+		}
 	}
 
 } /* end class definition */
