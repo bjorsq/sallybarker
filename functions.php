@@ -32,7 +32,10 @@ function sb_setup_theme()
 	add_image_size('full-image', 1000, 600, true);
     /* sort out post classes for layout */
     add_filter('post_class', 'sb_post_classes');
-
+    /* excerpt filters */
+    add_filter( 'excerpt_length', 'sb_excerpt_length' );
+    add_filter( 'excerpt_more', 'sb_continue_reading' );
+    add_filter( 'get_the_excerpt', 'sb_custom_excerpt_more' );
 }
 add_action( 'after_setup_theme', 'sb_setup_theme' );
 
@@ -139,3 +142,39 @@ function sb_get_comments($comment, $args, $depth)
 	</li>
 	<?php
 }
+
+if ( ! function_exists( 'sb_excerpt_length' )) :
+    /**
+     * Sets the post excerpt length to 60 characters.
+     * @return int
+     */
+    function sb_excerpt_length( $length )
+    {
+        return 60;
+    }
+endif;
+
+if ( ! function_exists( 'sb_continue_reading' )) :
+    /**
+     * Replaces "[...]" (appended to automatically generated excerpts) with an ellipsis and Continue reading link.
+     */
+    function sb_continue_reading( $more = "" )
+    {
+        return '&hellip; <a class="read-more" href="'. get_permalink() . '"><em>Read more &raquo;</em></a>';
+    }
+endif;
+
+if ( ! function_exists( 'sb_custom_excerpt_more' )) :
+    /**
+     * Adds a pretty "Continue Reading" link to custom post excerpts.
+     */
+    function sb_custom_excerpt_more( $output )
+    {
+        if ( has_excerpt() && ! is_attachment() )
+        {
+            $output .= sb_continue_reading();
+        }
+        return $output;
+    }
+endif;
+

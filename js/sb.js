@@ -122,7 +122,7 @@ jQuery(function($){
 
 	var loadImage = function(s)
 	{
-		console.log(s);
+		logToConsole(s);
 		var cid = s.cid,
 			loop = s.loop,
 			img_idx = s.img_idx,
@@ -139,27 +139,27 @@ jQuery(function($){
 			transition = gallerysettings[cid].transition || 500,
 			/* create a new image object to load the next image */
 			img = new Image();
-		console.log($.data($c[0], 'galleryData').currentImage);
-		console.log("preparing to load image");
-		console.log("image index: "+img_idx);
+		logToConsole($.data($c[0], 'galleryData').currentImage);
+		logToConsole("preparing to load image");
+		logToConsole("image index: "+img_idx);
 		if (img_idx === false) {
 			img_idx = nxt;
-			console.log('image index set to next available: '+nxt);
+			logToConsole('image index set to next available: '+nxt);
 		}
 		if (t[img_idx]) {
-			console.log("loading image:"+t[img_idx].full_src);
+			logToConsole("loading image:"+t[img_idx].full_src);
 			/* load image */
 			img.onload = function() {
 				var cap;
-				console.log("image loaded - adding slide and fading in");
+				logToConsole("image loaded - adding slide and fading in");
 				$('<img src="'+t[img_idx].full_src+'" title="'+t[img_idx].title+'" alt="'+t[img_idx].title+'" data-caption="'+t[img_idx].caption+'" />').css({'opacity':0,'position':'absolute','left':0,'top':0}).appendTo($f);
 				$.data($c[0], 'galleryData', {'currentImage':img_idx});
 				if (transition == 0) {
 					$('img:last', $f).css({'opacity':1,'position':'relative'});
 					$('img:first', $f).remove();
-			        console.log("fade in complete in 0s (no transition)");
+			        logToConsole("fade in complete in 0s (no transition)");
 					if (loop) {
-						console.log('looping loadImage for next image in sequence');
+						logToConsole('looping loadImage for next image in sequence');
 						gallerytimer = setTimeout(function(){loadImage({'cid':cid,'img_idx':false,'loop':true});}, interval);
 					}
 				} else {
@@ -198,14 +198,38 @@ jQuery(function($){
 	},
 	reorganiseThumbnails = function(cid, img_idx)
 	{
+		logToConsole("reorganiseThumbnails");
 		var $c = $('#'+cid),
 			t = galleryimages[cid],
-			$t = $('.thumbnails ul', $c);
-		console.log($t.width());
-		console.log($c.width());
-		if ($t.width() > $c.width()) {
-
-
+			$t = $('.thumbnails ul', $c),
+			img_width = ($t.width() / t.length),
+			cw = $c.width(),
+			tw = $t.width(),
+			offset = 0,
+			pos_actual = ((img_idx - 0.5) * img_width),
+			centre = (cw / 2);
+		logToConsole("thumbnail strip width: "+tw+"\nthumbnail container width: "+cw+"\nimage width: "+img_width+"\ncurrent image index: "+img_idx+"\nactual position in strip: "+pos_actual+"\nnumber of images: "+t.length);
+		if (tw > cw) {
+			logToConsole("width of thumbnails exceeds that of their container");
+			if (pos_actual > centre) {
+				logToConsole("thumbnail position is past the centre - determining if the thumbnails need to scroll");
+				offset = -((pos_actual + img_width) - centre);
+				if ((tw + offset + (img_width/2)) < cw) {
+					logToConsole("setting offset so thumbnails scroll to the end")
+					offset = (cw - tw) + 12;
+				}
+			} else {
+				offset = 0;
+			}
+			logToConsole("offset by: "+offset);
+			if ($t.css("marginLeft") != offset+'px') {
+				logToConsole("need to scroll thumbnails (marginLeft is "+$t.css("marginLeft")+")");
+				$t.animate({'marginLeft':offset+'px'}, 500, function(){
+					logToConsole("thumbnails scrolled to new position");
+				});
+			} else {
+				logToConsole("no need to scroll thumbnails (marginLeft is same as offset)");
+			}
 		}
 	}
 	if ($('.gallery').length) {
@@ -248,5 +272,12 @@ jQuery(function($){
 			}
 		});
 	}
-
+	$('#imageCarousel').carousel();
+	var debug = true;
+	function logToConsole(msg)
+	{
+		if (window.console && debug) {
+			console.log(msg);
+		}
+	}
 });

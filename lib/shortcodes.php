@@ -39,7 +39,7 @@ class sb_shortcodes
 	    /* add uol slideshow shortcode */
 		add_shortcode( 'carousel', array( 'sb_shortcodes', 'carousel_shortcode' ) );
 	    /* add uol slideshow shortcode */
-		add_shortcode( 'homepage_carousel', array( 'sb_shortcodes', 'homepage_carousel_shortcode' ) );
+		add_shortcode( 'homepage_gallery', array( 'sb_shortcodes', 'homepage_carousel_shortcode' ) );
 	}
 
 	/* gets images for a post and puts threm in a slideshow */
@@ -201,7 +201,7 @@ class sb_shortcodes
 	    	$options["max_h"] = max($options["max_h"], $src[2]);
 	    	/* get thumbnail image details */
 	    	$thumb = wp_get_attachment_image_src($id, $options["thumb_size"]);
-	    	$thumbs_w += ($thumb[1] + 15);
+	    	$thumbs_w += ($thumb[1] + 12);
 	    	$class = ($idx == 0)? ' active': '';
 		    $thumbs .= sprintf('<li><a href="%s" class="thumb-link%s" rel="slide%d"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /></a></li>', $src[0], $class, $idx, $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt));
 		    $idx++;
@@ -523,19 +523,18 @@ class sb_shortcodes
 
 	private static function get_carousel_html($instance, $options, $attachments)
 	{
-		$selector = "carousel-{$instance}";
 		$class = ' class="carousel slide' . ($options['class'] != ''? ' ' . trim($options['class']): '') . '"';
 		$data_attr = sprintf(' data-interval="%s" data-pause="%s"', $options["interval"], $options["pause"]);
 		$first = true;
-		$output = sprintf('<div id="%s"%s><div class="carousel-inner">', $selector, $class);
+		$output = sprintf('<div id="imageCarousel"%s><div class="carousel-inner">', $class);
 		foreach ( $attachments as $id => $attachment ) {
 	    	$src = wp_get_attachment_image_src($id, $options["size"]);
 	    	$class = $first? ' active': '';
-		    $output .= sprintf('<div class="item%s"><img src="%s" width="%s" height="%s" alt="%s" title="%s" /><div class="carousel-caption"><h4>%s</h4>%s</div></div>', $class, $src[0], $src[1], $src[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), $attachment->post_title, $attachment->post_excerpt);
+		    $output .= sprintf('<div class="item%s"><img src="%s" width="%s" height="%s" alt="%s" title="%s" /><div class="carousel-caption"><h4><a href="%s">%s</a></h4>%s</div></div>', $class, $src[0], $src[1], $src[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), get_permalink($attachment->post_parent), $attachment->post_title, $attachment->post_excerpt);
 		    $first = false;
 		}
-		$output .= '<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>';
-		$output .= '<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>';
+		$output .= '<a class="carousel-control left" href="#imageCarousel" data-slide="prev">&lsaquo;</a>';
+		$output .= '<a class="carousel-control right" href="#imageCarousel" data-slide="next">&rsaquo;</a>';
 		$output .= '</div></div>';
 		return $output;
 	}
