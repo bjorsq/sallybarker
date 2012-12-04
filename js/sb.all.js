@@ -272,7 +272,7 @@ jQuery(function($){
 			}
 		});
 	}
-	$('#imageCarousel').carousel();
+	$('#imageCarousel').carousel({interval:9000});
 	var debug = true;
 	function logToConsole(msg)
 	{

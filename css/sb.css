@@ -3415,11 +3415,10 @@ button.close {
 }
 .carousel-control {
   position: absolute;
-  top: 40%;
+  bottom: 15px;
   left: 15px;
   width: 40px;
   height: 40px;
-  margin-top: -20px;
   font-size: 60px;
   font-weight: 100;
   line-height: 30px;
@@ -3445,12 +3444,15 @@ button.close {
 }
 .carousel-caption {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 15px;
-  background: #333333;
-  background: rgba(0, 0, 0, 0.75);
+  left: 15px;
+  width: 20%;
+  top: 15px;
+  padding: 10px;
+  background: #042029;
+  background: rgba(4, 32, 41, 0.75);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 .carousel-caption h4,
 .carousel-caption p {
