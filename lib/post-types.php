@@ -255,6 +255,7 @@ class sb_post_types
 	{
 		if ( ! is_admin() && is_tax() ) {
 			$query->query_vars['orderby'] = 'menu_order';
+			$query->query_vars['order'] = 'ASC';
 			return;
 		}
 	}
