@@ -73,9 +73,7 @@ function sb_enqueue_scripts()
 
 function sb_posted_on()
 {
-	echo '<time class="updated" datetime="'. get_the_time('c') .'" pubdate>'. sprintf('Posted on %s at %s.', get_the_time('l, F jS, Y'), get_the_time()) .'</time>';
-	echo '<p class="byline author vcard">Written by <a href="'. get_author_posts_url(get_the_author_meta('id')) .'" rel="author" class="fn">'. get_the_author() .'</a></p>';
-	
+	echo '<p class="muted"><time class="updated" datetime="'. get_the_time('c') .'" pubdate>'. sprintf('Posted by %s on %s at %s.', get_the_author(), get_the_time('l, F jS, Y'), get_the_time()) .'</time></p>';
 }
 function sb_content_nav()
 {
@@ -84,6 +82,7 @@ function sb_content_nav()
 // return entry meta information for posts, used by multiple loops.
 function sb_entry_meta()
 {
+	return;
 	$show_sep = false;
 	$out = "";
 	$categories_list = get_the_category_list( ', ' );
@@ -111,7 +110,7 @@ function sb_entry_meta()
 		$out .= '</span>';
 	endif;
 	$out .= edit_post_link( 'Edit', '<span class="edit-link">', '</span>' );
-    return $out;
+    print($out);
 }
 function sb_get_comments($comment, $args, $depth) 
 {

@@ -16,35 +16,54 @@ body {
   font-size: @baseFontSize;
   line-height: @baseLineHeight;
   color: @textColor;
-  background: @bodyBackground url(../images/body-bg.jpg) repeat-x top left;
-  height:100%;
+  background: @bodyBackground url(../images/body-bg.jpg) repeat-x fixed top left;
+  min-height:100% !IMPORTANT;
 }
 
 #wrap {
-    min-height:100%
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -358px;
 }
 .container {
-  padding:60px 0 358px 0;
-  overflow:auto;
+  padding:60px 0 0 0;
   width:1000px;
   margin:0 auto;
 }
-
-div.footer {
+.push, .footer {
+  height:358px;
+}
+.footer {
   position: relative;
   background: @bodyBackground url(../images/footer-bg.jpg) repeat-x bottom center;
   width:100%;
-  margin-top:-358px;
-  height:358px;
   clear:both;
 }
-/*Opera Fix*/
-body:before {
-  content:"";
-  height:100%;
-  float:left;
-  width:0;
-  margin-top:-32767px;
+.page-footer {
+  clear:both;
+  margin-top:1em;
+  #gradient>.vertical(lighten(@bodyBackground, 1%), @bodyBackground);
+  .border-top-radius(5px);
+
+  .col {
+    h3 {
+      border-bottom:1px solid lighten(@bodyBackground, 4%);
+    }
+    width:26%;
+    padding:0 2%;
+    float:left;
+    margin-right:5%;
+  }
+  .last {
+    margin-right:0;
+    float:right;
+  }
+  .clear {
+    clear:both;
+    line-height:1px;
+    height:1px;
+  }
 }
 
 // Links
@@ -106,6 +125,7 @@ article.summary {
     width:100%;
     overflow:auto;
     .frames {
+      background:#fff;
 	    img {
 	    }
     }
@@ -114,6 +134,7 @@ article.summary {
 .comic-frame-pages {
     width:100%;
     .frames {
+      background:#fff;
 	    img {
 	    	max-width:100%;
 	    	height:auto;
@@ -137,4 +158,14 @@ article.summary {
 
 .entry-content{
   width:75%;
+}
+
+// C.V.
+////////////////////
+
+#cv {
+  h3 {
+    border-bottom:1px solid @tableBorder;
+    cursor:pointer;
+  }
 }

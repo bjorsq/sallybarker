@@ -66,6 +66,44 @@ class sb_menus
 		}
 	}
 
+	/* output menu for single pages */
+	public static function category_menu()
+	{
+		global $post;
+		$out = '';
+		$terms = get_terms($post->post_type . "_category");
+		$list_terms = array();
+		foreach ($terms as $term) {
+			if (has_term($term->term_id, $post->post_type . "_category", $post)) {
+				$list_terms[] = $term->term_id;
+			}
+		}
+		$out .= print_r($list_terms, true);
+		if (count($list_terms)) {
+			$args = array(
+				'post_type' => $post->post_type,
+				'tax_query' => array(
+					array(
+						'taxonomy' => $post->post_type . "_category",
+						'field' => 'id',
+						'terms' => $list_terms
+					)
+				)
+			);
+			$related = get_posts($args);
+			if (count($related)) {
+				$out = '<div class="nav related"><h4>Related Projects</h4><ul class="menu">';
+				foreach ($related as $r) {
+					if ($post->ID != $r->ID) {
+						$out .= sprintf('<li><a href="%s">%s</a></li>', get_permalink($r->ID), $r->post_title);
+					}
+				}
+				$out .= '</ul></div>';
+			}
+		}
+		echo $out;
+	}
+
 
 } /* end class definition */
 

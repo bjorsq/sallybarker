@@ -108,7 +108,7 @@ class sb_post_types
 			'hierarchical' => true,
 			'menu_position' => 22,
 			'rewrite' => array( 'slug' => 'education', 'with_front' => false ),
-			'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )
+			'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments'  )
 		) ); 
 	    $cat_labels = array(
 	        'name' => 'Education Categories',

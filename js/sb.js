@@ -119,8 +119,8 @@ jQuery(function($){
 		e.preventDefault();
 		return false;
 	});
-
-	var loadImage = function(s)
+	var debug = true,
+	loadImage = function(s)
 	{
 		logToConsole(s);
 		var cid = s.cid,
@@ -150,7 +150,6 @@ jQuery(function($){
 			logToConsole("loading image:"+t[img_idx].full_src);
 			/* load image */
 			img.onload = function() {
-				var cap;
 				logToConsole("image loaded - adding slide and fading in");
 				$('<img src="'+t[img_idx].full_src+'" title="'+t[img_idx].title+'" alt="'+t[img_idx].title+'" data-caption="'+t[img_idx].caption+'" />').css({'opacity':0,'position':'absolute','left':0,'top':0}).appendTo($f);
 				$.data($c[0], 'galleryData', {'currentImage':img_idx});
@@ -179,13 +178,12 @@ jQuery(function($){
 		        $('.thumb-link', $c).removeClass('active');
 			    $('.thumb-link', $c).eq(img_idx).addClass('active');
 				if (gallerysettings[cid] && gallerysettings[cid].caption) {
-					cap = '<h3>'+t[img_idx].title+'</h3><p>'+t[img_idx].caption+'</p>';
 					if (transition == 0) {
-						$('.figcaption', $c).html(cap);
+						$('.figcaption', $c).html(t[img_idx].caption);
 					} else {
 						$('.figcaption', $c).fadeOut((transition / 2), function(){
-							$(this).html(cap);
-							if ($.trim(cap) !== "") {
+							$(this).html(t[img_idx].caption);
+							if ($.trim(t[img_idx].caption) !== "") {
 								$(this).fadeIn((transition / 2));
 							}
 						});
@@ -273,7 +271,6 @@ jQuery(function($){
 		});
 	}
 	$('#imageCarousel').carousel({interval:9000});
-	var debug = true;
 	function logToConsole(msg)
 	{
 		if (window.console && debug) {

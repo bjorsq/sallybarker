@@ -157,6 +157,7 @@ class sb_shortcodes
 		    'loop'       => true,
 		    'caption'    => true,
 			'include'    => '',
+			'ids'		 => '',
 			'exclude'    => ''
 		), $attr);
 
@@ -194,7 +195,7 @@ class sb_shortcodes
 	    	$src = wp_get_attachment_image_src($id, $options["full_size"]);
 	    	/* collect html of first image for output */
 	    	if ($feature === false) {
-	    		$feature = sprintf('<div class="figure"><img src="%s" alt="%s" title="%s" data-caption="%s" /><div class="figcaption"><h3>%s</h3>%s</div></div>', $src[0], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt), apply_filters('the_title', $attachment->post_title), apply_filters('the_content', $attachment->post_excerpt));
+	    		$feature = sprintf('<div class="figure"><img src="%s" alt="%s" title="%s" data-caption="%s" /><div class="figcaption">%s</div></div>', $src[0], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt), apply_filters('the_content', $attachment->post_excerpt));
 	    	}
 	    	/* set max width and height */
 	    	$options["max_w"] = max($options["max_w"], $src[1]);
@@ -203,7 +204,7 @@ class sb_shortcodes
 	    	$thumb = wp_get_attachment_image_src($id, $options["thumb_size"]);
 	    	$thumbs_w += ($thumb[1] + 12);
 	    	$class = ($idx == 0)? ' active': '';
-		    $thumbs .= sprintf('<li><a href="%s" class="thumb-link%s" rel="slide%d"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /></a></li>', $src[0], $class, $idx, $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt));
+		    $thumbs .= sprintf('<li><a href="%s" class="thumb-link%s" rel="slide%d"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /></a></li>', $src[0], $class, $idx, $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr(apply_filters('the_content', $attachment->post_excerpt)));
 		    $idx++;
 	    	$json[] = (object) array(
 			    "full_src" => $src[0],
@@ -213,7 +214,7 @@ class sb_shortcodes
 			    "thumb_w" => $thumb[1],
 			    "thumb_h" => $thumb[2],
 			    "title" => $attachment->post_title,
-			    "caption" => $attachment->post_excerpt,
+			    "caption" => apply_filters('the_content', $attachment->post_excerpt),
 			    "description" => $attachment->post_content,
 			    "id" => $id
 			);
@@ -255,7 +256,7 @@ class sb_shortcodes
 			'size'       => 'medium',
 		    'class'      => '',
 		    'caption'    => true,
-		    'usetitle'   => true,
+		    'usetitle'   => false,
 		    'navigation' => true,
 		    'interval'   => 5000,
 		    'transition' => 500,
@@ -335,15 +336,13 @@ class sb_shortcodes
 	public static function get_image_attachments($options)
 	{
 		$attachments = array();
-		if ( !empty($options["include"]) ) {
-			$include = preg_replace( '/[^0-9,]+/', '', $options["include"] );
+		if ( !empty($options["ids"]) ) {
+			$include = self::csvnum2array($options["ids"]);
 			$_attachments = get_posts( array(
-				'include' => $include,
-				'post_status' => 'inherit',
+				'post__in' => $include,
 				'post_type' => 'attachment',
 				'post_mime_type' => 'image',
-				'order' => $options["order"],
-				'orderby' => $options["orderby"]
+				'orderby' => 'post__in'
 			) );
 			foreach ( $_attachments as $key => $val ) {
 				$attachments[$val->ID] = $_attachments[$key];
@@ -393,9 +392,6 @@ class sb_shortcodes
 				"post_parent" => $post->ID,
 				"numberposts" => -1
 			);
-			if ( has_post_thumbnail($post->ID) ) {
-				$args["exclude"] = get_post_thumbnail_id($post->ID);
-			}
 			$attachments = get_posts($args);
 			$images = array();
 			if (count($attachments)) {
@@ -490,10 +486,11 @@ class sb_shortcodes
 			'orderby'    => 'menu_order ID',
 			'size'  	 => 'full-image',
 			'interval'   => 8000,
-			'pause'      => 'hover',
+			'pause'      => '',
 		    'class'      => 'homepage',
 		    'id'         => $post->ID,
 			'exclude'    => '',
+			'ids'        => '',
 			'limit'      => -1
 		), $attr);
 
@@ -505,15 +502,26 @@ class sb_shortcodes
 	private static function get_carousel_html($instance, $options, $attachments)
 	{
 		$class = ' class="carousel slide' . ($options['class'] != ''? ' ' . trim($options['class']): '') . '"';
-		$data_attr = sprintf(' data-interval="%s" data-pause="%s"', $options["interval"], $options["pause"]);
+		$data_attr = sprintf(' data-interval="%s"', $options["interval"]);
+		if ( !empty($options["pause"]) ) {
+			$data_attr .= ' data-pause="hover"';
+		}
 		$first = true;
 		$output = sprintf('<div id="imageCarousel"%s%s><div class="carousel-inner">', $class, $data_attr);
 		foreach ( $attachments as $id => $attachment ) {
 	    	$src = wp_get_attachment_image_src($id, $options["size"]);
-	    	$url = (trim($attachment->post_content) != '')? trim($attachment->post_content): get_permalink($attachment->post_parent);
+	    	$url = (trim($attachment->post_content) != '' && strpos(trim($attachment->post_content), 'http') === 0)? trim($attachment->post_content): '';
 	    	$class = $first? ' active': '';
-
-		    $output .= sprintf('<div class="item%s"><img src="%s" width="%s" height="%s" alt="%s" title="%s" /><div class="carousel-caption"><h4><a href="%s">%s</a></h4><p>%s</p></div></div>', $class, $src[0], $src[1], $src[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), $url, $attachment->post_title, $attachment->post_excerpt);
+			$output .= sprintf('<div class="item%s">', $class);
+	    	if (!empty($url)) {
+	    		$output .= sprintf('<a href="%s">', $url);
+	    	}
+		    $output .= sprintf('<img src="%s" width="%s" height="%s" alt="%s" />', $src[0], $src[1], $src[2], esc_attr($attachment->post_title));
+	    	if (!empty($url)) {
+	    		$output .= '</a>';
+	    	}
+		    $captionstyle = (empty($attachment->post_title) && empty($attachment->post_excerpt))? ' style="display:none"': '';
+		    $output .= sprintf('<div class="carousel-caption"%s><h4><a href="%s">%s</a></h4><p>%s</p></div></div>', $captionstyle, $url, $attachment->post_title, $attachment->post_excerpt);
 		    $first = false;
 		}
 		$output .= '</div>';
@@ -521,6 +529,22 @@ class sb_shortcodes
 		$output .= '<a class="carousel-control right" href="#imageCarousel" data-slide="next">&rsaquo;</a>';
 		$output .= '</div>';
 		return $output;
+	}
+
+	public static function csvnum2array($csv = "")
+	{
+		$clean = preg_replace( '/[^0-9,]+/', '', $csv );
+		$possibles = explode(",", $clean);
+		$return = array();
+		if (count($possibles)) {
+			foreach($possibles as $poss) {
+				if (trim($poss) == "" || intval($poss) == 0) {
+					continue;
+				}
+				$return[] = intval($poss);
+			}
+		}
+		return $return;
 	}
 
 } /* end class definition */

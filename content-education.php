@@ -17,7 +17,10 @@
 						</div><!-- .entry-meta -->
 						<?php endif; ?>
 					</header><!-- .entry-header -->
-					<div class="post-content">
+					<div class="sidebar-nav">
+						<?php sb_menus::category_menu(); ?>
+					</div><!--/.well -->
+					<div class="entry-content">
 						<?php the_content( 'Continue reading <span class="meta-nav">&rarr;</span>' ); ?>
 						<?php wp_link_pages( array( 'before' => '<div class="page-link"><span>Pages:</span>', 'after' => '</div>' ) ); ?>
 					</div><!-- .entry-content -->
