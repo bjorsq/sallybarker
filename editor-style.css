@@ -80,7 +80,7 @@ h6 {
   font-family: inherit;
   font-weight: normal;
   line-height: 1;
-  color: #000000;
+  color: #ffffff;
   text-rendering: optimizelegibility;
 }
 h1 small,
@@ -99,7 +99,7 @@ h3 a,
 h4 a,
 h5 a,
 h6 a {
-  color: #000000;
+  color: #ffffff;
 }
 h1 a:hover,
 h2 a:hover,

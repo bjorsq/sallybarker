@@ -8,5 +8,5 @@
 ?>
 
 			<div class="row-fluid">
-				<?php echo do_shortcode('[homepage_gallery]'); ?>
+				<?php the_content(); ?>
 			</div>
