@@ -2491,6 +2491,10 @@ table.bordered colgroup + tbody tr:first-child td:last-child {
   margin: 0;
   line-height: 1.2em;
 }
+.gallery .figure img {
+  width: 100%;
+  height: auto;
+}
 .gallery .thumbnails {
   width: 1000px;
   overflow: hidden;

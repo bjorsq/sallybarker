@@ -16,7 +16,7 @@
 						<h1 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( 'Permalink to %s', the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
 					</header><!-- .entry-header -->
 					<div class="sidebar-nav">
-						<?php sb_menus::category_menu(); ?>
+						<?php sb_menus::category_menu($post); ?>
 					</div><!--/.well -->
 					<div class="entry-content">
 						<?php the_content( 'Continue reading <span class="meta-nav">&rarr;</span>' ); ?>

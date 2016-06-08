@@ -236,14 +236,14 @@ jQuery(function($){
 				cid = $c.attr("id"), 
 				interval;
 			/* show the caption on mouseover */
-			/*$('.figure', this).on({
+			$('.figure', this).on({
 				'mouseenter':function(){
 					$('.figcaption', this).fadeIn(200);
 				},
 				'mouseleave':function(){
 					$('.figcaption', this).fadeOut(200);
 				}
-			});*/
+			});
 			/* check to see if there is more than one image */
 			if (galleryimages[cid] && galleryimages[cid].length > 1) {
 				/* time between slides */

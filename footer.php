@@ -9,11 +9,11 @@
 				<div class="page-footer row-fluid">
 					<div class="col">
 						<h3><a href="<?php bloginfo('url'); ?>/art/">Art</a></h3>
-						<?php sb_menus::menu("art"); ?>
+						<?php sb_menus::category_menu("art"); ?>
 					</div>
 					<div class="col">
-						<h3><a href="<?php bloginfo('url'); ?>/education/">Employment</a></h3>
-						<?php sb_menus::menu("education"); ?>
+						<h3><a href="<?php bloginfo('url'); ?>/education/">Education</a></h3>
+						<?php sb_menus::category_menu("education"); ?>
 					</div>
 					<div class="col last">
 						<?php 

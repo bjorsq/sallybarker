@@ -104,7 +104,7 @@ class sb_shortcodes
 					"desc" => apply_filters("the_content", $image->post_content)
 				);
 				if ( $first ) {
-					$out .= sprintf('<img src="%s" alt="%s">', $img[0], esc_attr($image->post_title));
+					$out .= sprintf('<img src="%s" title="%s">', $img[0], esc_attr($image->post_title));
 					$out .= sprintf('<figcaption>%s</figcaption>', apply_filters("the_content", $image->post_content));
 					$first = false;
 				}
@@ -195,7 +195,7 @@ class sb_shortcodes
 	    	$src = wp_get_attachment_image_src($id, $options["full_size"]);
 	    	/* collect html of first image for output */
 	    	if ($feature === false) {
-	    		$feature = sprintf('<div class="figure"><img src="%s" alt="%s" data-caption="%s" /><div class="figcaption">%s</div></div>', $src[0], esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt), apply_filters('the_content', $attachment->post_excerpt));
+	    		$feature = sprintf('<div class="figure"><img src="%s" alt="%s" title="%s" data-caption="%s" /><div class="figcaption">%s</div></div>', $src[0], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr($attachment->post_excerpt), apply_filters('the_content', $attachment->post_excerpt));
 	    	}
 	    	/* set max width and height */
 	    	$options["max_w"] = max($options["max_w"], $src[1]);
@@ -204,7 +204,7 @@ class sb_shortcodes
 	    	$thumb = wp_get_attachment_image_src($id, $options["thumb_size"]);
 	    	$thumbs_w += ($thumb[1] + 12);
 	    	$class = ($idx == 0)? ' active': '';
-		    $thumbs .= sprintf('<li><a href="%s" class="thumb-link%s" rel="slide%d"><img src="%s" width="%s" height="%s" alt="%s" data-caption="%s" /></a></li>', $src[0], $class, $idx, $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr(apply_filters('the_content', $attachment->post_excerpt)));
+		    $thumbs .= sprintf('<li><a href="%s" class="thumb-link%s" rel="slide%d"><img src="%s" width="%s" height="%s" alt="%s" title="%s" data-caption="%s" /></a></li>', $src[0], $class, $idx, $thumb[0], $thumb[1], $thumb[2], esc_attr($attachment->post_title), esc_attr($attachment->post_title), esc_attr(apply_filters('the_content', $attachment->post_excerpt)));
 		    $idx++;
 	    	$json[] = (object) array(
 			    "full_src" => $src[0],
@@ -296,7 +296,7 @@ class sb_shortcodes
 	    	$src = wp_get_attachment_image_src($att_id, $options["size"]);
 	    	if ($first) {
 	    		$src = wp_get_attachment_image_src($att_id, $options["size"]);
-		    	$output .= sprintf('<img src="%s" width="%s" height="%s" alt="%s" />', $src[0], $src[1], $src[2], esc_attr($attachment->post_title));
+		    	$output .= sprintf('<img src="%s" width="%s" height="%s" alt="%s" title="%s" />', $src[0], $src[1], $src[2], $attachment->post_title, $attachment->post_title);
 			    if ($caption || $navigation) {
 				    /* make sure caption spans width of image */
 				    $cap_style = 'style="width:' . $src[1] . 'px;';
