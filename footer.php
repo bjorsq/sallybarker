@@ -9,16 +9,18 @@
 				<div class="page-footer row-fluid">
 					<div class="col">
 						<h3><a href="<?php bloginfo('url'); ?>/art/">Art</a></h3>
-						<?php sb_menus::category_menu("art"); ?>
+						<?php sb_menus::menu("art"); ?>
 					</div>
 					<div class="col">
-						<h3><a href="<?php bloginfo('url'); ?>/education/">Education</a></h3>
-						<?php sb_menus::category_menu("education"); ?>
+						<h3><a href="<?php bloginfo('url'); ?>/education/">Employment</a></h3>
+						<?php sb_menus::menu("education"); ?>
 					</div>
 					<div class="col last">
 						<?php 
 						$latest = get_posts(array(
-							'numberposts' => 3
+							'numberposts' => 3,
+							'orderby'     => 'date',
+							'order'       => 'DESC'
 						));
 						if (count($latest)) {
 							printf('<h3><a href="%s/blog/">Latest Posts</a></h3><ul>', get_bloginfo('url'));

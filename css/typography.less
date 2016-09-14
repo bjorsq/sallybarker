@@ -1,0 +1,60 @@
+/* Maths */
+
+@base-em: @base/16em;
+@line-em: (@line / @base) * 1em;
+
+body {
+    font-size: (@base / 16) * 100%;
+    line-height: @line-em;
+}
+
+/*
+    @base-px: the context's font size in px
+    @line-px: the desired line-height in px
+    @size-px: the desired font-height in px
+    @lines: the number of lines to take up
+*/
+.font-size(@size-px, @lines, @margin-top, @margin-bottom) {
+    
+    @fs: @base-em * (@size-px/16em);
+    @line-height: (@line-em / @fs);
+    
+    font-size: @fs;
+    line-height: @line-height * @lines;
+    margin-top: @line-height * @margin-top;
+    margin-bottom: @line-height * @margin-bottom;
+}
+
+.font-size-context(@context, @size-px, @lines, @margin-top, @margin-bottom) {
+    
+    @fs: (16em/@context) * (@size-px/16em);
+    @line-height: (((@line / @context) * 1em) / @fs);
+    
+    font-size: @fs;
+    line-height: @line-height * @lines;
+    margin-top: @line-height * @margin-top;
+    margin-bottom: @line-height * @margin-bottom;
+}
+
+.margin(@context, @top-lines, @bottom-lines) {
+    @fs: @base-em * (@context/16em);
+    @line-height: (@line-em / @fs);
+    
+    margin-top:@top-lines * @line-height;
+    margin-bottom:@bottom-lines * @line-height;
+}
+
+.height(@context, @lines) {
+    @fs: @base-em * (@context/16em);
+    @line-height: (@line-em / @fs);
+    
+    height:@lines * @line-height;
+}
+
+.fontface(@family, @filename, @weight : normal, @style : normal) {
+    font-family: @family;
+    src: e(%("url('fonts/%s/%s.eot')", @family, @filename));
+    src: e(%("url('fonts/%s/%s.eot?#iefix') format('embedded-opentype'),url('fonts/%s/%s.woff') format('woff'),url('fonts/%s/%s.ttf') format('truetype'),url('fonts/%s/%s.svg#%s') format('svg')", @family, @filename, @family, @filename, @family, @filename, @family, @filename, @family));
+    font-weight: @weight;
+    font-style: @style;
+}

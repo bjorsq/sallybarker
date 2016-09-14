@@ -253,7 +253,7 @@ class sb_post_types
 	 */
 	function put_in_menu_order( $query ) 
 	{
-		if ( ! is_admin() && is_tax() ) {
+		if ( 0 && ! is_admin() && is_main_query() && ( is_tax('education_category') || is_tax('art_category') ) ) {
 			$query->query_vars['orderby'] = 'menu_order';
 			$query->query_vars['order'] = 'ASC';
 			return;

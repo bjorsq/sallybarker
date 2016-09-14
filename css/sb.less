@@ -1,0 +1,110 @@
+@import "helper.less";
+@import "normalise.less";
+@import "vendor-prefixes.less";
+@base: 16;
+@line: 21;
+@import "typography.less";
+
+/* =============================================================================
+   Fonts
+   ========================================================================== */
+/*
+@font-face {
+	.fontface('NewAthenaUnicodeRegular', 'new_athena_unicode-webfont');
+}
+@font-face {
+	.fontface('StMarieThin', 'StMarie-Thin-webfont');
+}
+*/
+@font-face {
+	.fontface('CallunaRegular', 'Calluna-Regular-webfont');
+}
+/*
+@font-face {
+	.fontface('AlegreyaRegular','Alegreya-Regular-webfont');
+}
+@font-face {
+	.fontface('AlegreyaItalic','Alegreya-Italic-webfont');
+}
+@font-face {
+	.fontface('AlegreyaBold','Alegreya-Bold-webfont');
+}
+@font-face {
+	.fontface('AlegreyaBoldItalic','Alegreya-BoldItalic-webfont');
+}
+@font-face {
+	.fontface('AlegreyaBlack','Alegreya-Black-webfont');
+}
+@font-face {
+	.fontface('AlegreyaBlackItalic','Alegreya-BlackItalic-webfont');
+}
+@font-face {
+	.fontface('AlegreyaSCRegular','AlegreyaSC-Regular-webfont');
+}
+@font-face {
+	.fontface('AlegreyaSCItalic','AlegreyaSC-Italic-webfont');
+}
+@font-face {
+	.fontface('AlegreyaSCBold','AlegreyaSC-Bold-webfont');
+}
+@font-face {
+	.fontface('AlegreyaSCBoldItalic','AlegreyaSC-BoldItalic-webfont');
+}
+@font-face {
+	.fontface('AlegreyaSCBlack','AlegreyaSC-Black-webfont');
+}
+@font-face {
+	.fontface('AlegreyaSCBlackItalic','AlegreyaSC-BlackItalic-webfont');
+}
+*/
+
+body {
+	background:#042029;
+	color:#ccdadc;
+}
+a {
+	color:#fff;
+	text-decoration:none;
+}
+a:hover {
+	text-decoration:underline;
+}
+.page {
+	margin: 0 auto;
+	max-width: 700px;
+	width: 93%;
+}
+
+h1 {
+	font:2em/3em 'CallunaRegular','Trebuchet MS',Georgia,serif;
+}
+
+.assistive-text {
+	display:none;
+}
+
+/* Small screen! */
+@media screen and (min-width: 600px) {
+	.page {
+		max-width:860px;
+	}
+}
+
+/* Desktop */
+@media screen and (min-width: 860px) { 
+	.page {
+		max-width:860px;
+	}
+}
+
+/* widescreen */
+@media screen and (min-width: 1200px) {
+	.page {
+		max-width:1000px;
+	}
+}
+
+/* print styles */
+@media print {
+
+}

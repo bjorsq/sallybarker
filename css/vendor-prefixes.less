@@ -1,0 +1,52 @@
+.border-radius( @radius: 10px )
+{
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	border-radius: @radius;		
+}
+
+.box-shadow( @x : 0, @y : 0, @depth : 5px, @color : black)
+{
+    @val: @x @y @depth @color;
+    
+	-webkit-box-shadow:@val;
+	-moz-box-shadow:@val;
+	box-shadow:@val;
+}
+
+.columns(@count : 3, @gap : 20px)
+{
+	-moz-column-count: @count;
+	-moz-column-gap: @gap;
+	-webkit-column-count: @count;
+	-webkit-column-gap: @gap;
+	column-count: @count;
+	column-gap: @gap;
+}
+
+.text-shadow( @x : 0, @y : 0, @depth : 5px, @color : black)
+{
+    @val: @x @y @depth @color;
+    
+    -webkit-text-shadow:@val;
+	-moz-text-shadow:@val;
+	text-shadow:@val;
+}
+
+.transform( @transform : rotate(90deg) )
+{
+	-webkit-transform: translate3d(0,0,0) @transform ;
+	-moz-transform: translate3d(0,0,0) @transform ;
+	-o-transform: translate3d(0,0,0) @transform ;
+	transform: translate3d(0,0,0) @transform;			
+}
+
+.transition( @what : all, @length : 0.25s, @easing : ease-in-out )
+{
+	@val: @what @length @easing;
+	
+	-webkit-transition: @val;
+	-moz-transition: @val;
+	-o-transition: @val;
+	transition: @val;			
+}

@@ -67,7 +67,7 @@ class sb_menus
 	}
 
 	/* output menu for single pages */
-	public static function category_menu()
+	public static function category_menu($post)
 	{
 		global $post;
 		$out = '';
