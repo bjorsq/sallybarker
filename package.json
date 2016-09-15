@@ -3,19 +3,16 @@
   "version": "0.0.1",
   "description": "Wordpress theme for sallybarker.org",
   "main": "index.php",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/bjorsq/sallybarker.git"
+    "url": "https://github.com/bjorsq/sallybarker.git"
   },
   "author": "Peter Edwards <peter.edwards@p-2.biz>",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://gitlab.com/bjorsq/sallybarker/issues"
+    "url": "https://github.com/bjorsq/sallybarker/issues"
   },
-  "homepage": "https://gitlab.com/bjorsq/sallybarker#README",
+  "homepage": "https://github.com/bjorsq/sallybarker#README",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.0.10",

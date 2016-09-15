@@ -19,6 +19,8 @@
     "tests"
   ],
   "devDependencies": {
-    "motion-ui": "^1.2.2"
+    "motion-ui": "^1.2.2",
+    "bootstrap": "^3.3.7",
+    "foundation": "^5.5.3"
   }
 }
